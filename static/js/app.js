@@ -1,25 +1,39 @@
+
+
+Vue.component('post', {
+  props: {
+    author: String,
+    content: String
+  },
+  template: `
+    <h3>{{ author }}</h3><br/>
+    <p>{{ content }}</p><hr>`
+});
+
+
 vue = new Vue({
   el: "#vue-app",
   data() {
     return {
-      users: null
+      posts: null,
+      test: 'test'
     };
   },
   mounted() {
-    getAjax("/api/users", data => {
-      this.users = JSON.parse(data)["users"];
+    getAjax("/api/posts", data => {
+      this.posts = JSON.parse(data)["posts"];
     });
+    console.log("mounted");
   },
   template: `
-    <table>
-        <tr>
-            <th>Username</th>
-            <th>E-Mail</th>
-        </tr>
-        <tr v-for='user in users'>
-            <td>{{user.username}}</td>
-            <td>{{user.email}}</td>
-        </tr>
-    </table>
+      <div>
+        <p>{{ test }}</p>
+        <post
+        v-for="post in posts"
+        v-bind:key="post.id"
+        v-bind:author="post.author"
+        v-bind:content="post.content"
+        ></post>
+      </div>
     `
 });

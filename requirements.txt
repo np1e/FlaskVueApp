@@ -1,0 +1,5 @@
+faker
+flask
+flask-sqlalchemy
+flask-jwt-extended
+

@@ -25,6 +25,12 @@ Zunächst sollte ein Python3 Virtualenv erzeugt werden
     source venv/bin/activate
     pip install -U pip
 
+Falls das nicht klappt aber der virtualenvwrapper installiert ist kann über
+
+    virtualenv -p python3 venv
+
+ein neues Virtualenv erzeugt werden.
+
 Danach können bei aktiviertem venv alle notwendigen Dependencies mittels
 
     pip install -r requirements.txt

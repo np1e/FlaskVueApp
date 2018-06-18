@@ -2,22 +2,34 @@
 <html>
 
 <head>
-
     <meta charset="utf-8" />
     <title>Page Title</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="static/css/minireset.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="static/css/style.css" />
+
     {% if config.get("DEBUG", False) %}
-    <script src="static/js/vue.js"></script>
+        <script src="static/js/libs/vue.js"></script>
     {% else %}
-    <script src="static/js/vue.min.js"></script>
+        <script src="static/js/libs/vue.min.js"></script>
     {% endif %}
-    <script src="static/js/utils.js"></script>
+    <script src="static/js/libs/vue-router.js"></script>
+    <!-- defer sorgt dafür, dass die scripte erst nach Aufbau des Doms ausgeführt werden.
+        Die Reihenfolge, in der die Scripte eingebunden werden ist trotzdem wichtig!
+    -->
+    <script src='/static/js/utils.js' defer></script>
+    <script src='/static/js/api-client.js' defer></script>
+    <script src='/static/js/components/login.js' defer></script>
+    <script src='/static/js/components/navigation.js' defer></script>
+    <script src='/static/js/components/registration.js' defer></script>
+    <script src='/static/js/components/user-editor.js' defer></script>
+    <script src='/static/js/components/user-table.js' defer></script>
+    <script src='/static/js/app.js' defer></script>
+        
 </head>
 
 <body>
     <div id='vue-app'>
     </div>
-    <script src="static/js/app.js"></script>
 </body>
 
 </html>

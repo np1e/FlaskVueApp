@@ -44,7 +44,7 @@ def login():
 
     # Identity can be any data that is json serializable
     access_token = create_access_token(identity=user.email)
-    return jsonify(access_token=access_token)
+    return jsonify(access_token=access_token, admin=user.admin, restricted=user.restricted, id=user.id)
 
 
 if __name__ == '__main__':

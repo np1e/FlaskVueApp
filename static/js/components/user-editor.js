@@ -14,7 +14,8 @@ Vue.component("user-editor", {
       data.user = {
         username: "",
         email: "",
-        password: ""
+        descrip: "",
+        password_hash: "",
       };
     }
     return data;
@@ -74,22 +75,35 @@ Vue.component("user-editor", {
    * @submit fängt das normale Submitverhalten ab und tauscht es durch
    * eine eigene JavaScript-Funktion aus.
    */
-  template: `<form @submit.prevent="submit" @keydown="clearMessages()" v-if='user'>
-    <span class="error" v-if='error'>{{ error }}</span>
-    <span class="success" v-if='success'>{{ success }}</span>
-    <div>
-      <label for="username">Username:</label>
-      <input id="username" type="text" name="username" v-model='user.username'>
-    </div>
-    <div>
-      <label for="email">Email:</label>
-      <input id="email" type="email" name="email" v-model='user.email'>
-    </div>
-    <div>
-      <label for="password">Password:</label>
-      <input id="password" type="password" name="password" v-model='user.password'>
-    </div>
-    <input type="submit" :value="isUpdate ? 'update' : 'register'">
-  </form>
+  template: `
+  <div class="col-sm-6 edit" v-if='user'>
+    <div class="wrap">
+      <h2>Account bearbeiten:</h2>
+      <hr>
+      <form @submit.prevent="submit" @keydown="clearMessages()">
+        <message v-if="success" message="'success': this.success"></message>
+        <message v-if="error" message="'error': this.error"></message>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input class="form-control" id="username" type="text" name="username" v-model='user.username'>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input class="form-control" id="email" type="email" name="email" v-model='user.email'>
+        </div>
+        <div class="form-group"><br>
+          <label for='desc'>Description</label>
+          <textarea class="form-control" name='desc' id='desc' v-model="user.descrip"></textarea><br>
+        </div>
+        <div class="form-group">
+          <label for="newPwd">New Password</label>
+          <input class="form-control" id="newPwd" type="password" name="newPwd" v-model='user.password_hash'>
+        </div>
+        <div class="form-group" v-if="isUpdate">
+          <label for="oldPwd">Old Password</label>
+          <input class="form-control" id="oldPwd" type="password" name="oldPwd" v-model='user.oldPassword'>
+        </div>
+        <input type="submit" :value="isUpdate ? 'update' : 'register'">
+      </form>
   `
 });

@@ -10,20 +10,39 @@
    * Routen innerhalb der Applikation mit zugehörigen Templates.
    * Mit der Funktion Vue.component können neue Komponenten registriert
    * aber auch bereits registrierte Komponenten referenziert werden.
-   * 
+   *
    * Das nutzen wir aus, um den globalen Namensraum nicht mit Komponenten
    * vollzumüllen.
    */
   const routes = [
-    { path: "/", component: Vue.component("user-table") },
+    { path: "/", component: Vue.component("feed") },
     { path: "/login", component: Vue.component("login") },
     { path: "/register", component: Vue.component("registration") },
     {
-      path: "/user/:id",
+      path: "/user/edit/:id",
       name: "user",
       component: Vue.component("user-editor"),
       props: { isUpdate: true }
-    }
+    },
+    {
+      path: "/user/:id",
+      name: "profile",
+      component: Vue.component("user")
+    },
+    { path: "/admin-panel", component: Vue.component("admin-panel") },
+    { path: "/post/create", component: Vue.component("create")},
+    {
+      path: "/post/edit/:id",
+      name: "post",
+      component: Vue.component("post-editor"),
+      props: { isUpdate: true }
+    },
+    {
+      path: "/post/:id",
+      name: "post",
+      component: Vue.component("post")
+    },
+    { path: "/user-table", component: Vue.component("user-table")}
   ];
   /** Initalisierung des Routers, mit den vorher definierten Komponenten */
   const router = new VueRouter({
@@ -62,10 +81,13 @@
     el: "#vue-app",
     router: router,
     template: `
-      <div id='vue-app'>
+      <div id='vue-app' class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
         <h2>Flask and Vue Boilerplate</h2>
-        <navigation v-if='api.isLoggedIn'></navigation>
-        <router-view></router-view>
+        <navigation></navigation>
+        <message></message>
+        <div class="col-md-12 col-sm-12">
+          <router-view></router-view>
+        </div>
       </div>`
   });
 })();

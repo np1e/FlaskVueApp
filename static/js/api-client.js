@@ -101,7 +101,10 @@ class ApiClient {
       this.headers,
       data => {
         this.state.token = data.access_token;
+        this.state.isAdmin = true ? data.admin == 1 : false;
+        this.state.isRestricted = true ? data.restricted == 1 : false;
         this.state.username = username;
+        this.state.id = data.id;
         this.state.isLoggedIn = true;
         this.storeState();
         success_callback();
@@ -172,6 +175,10 @@ class ApiClient {
    */
   get isLoggedIn() {
     return this.state.isLoggedIn;
+  }
+
+  get isAdmin() {
+    return this.state.isAdmin;
   }
 }
 

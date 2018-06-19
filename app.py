@@ -38,7 +38,7 @@ def login():
     if not password:
         return jsonify({"msg": "Missing password parameter"}),  HTTPStatus.BAD_REQUEST
 
-    user = User.query.filter_by(username=username, password=password).first()
+    user = User.query.filter_by(username=username, password_hash=password).first()
     if user is None:
         return jsonify({"msg": "Bad username or password"}),  HTTPStatus.UNAUTHORIZED
 

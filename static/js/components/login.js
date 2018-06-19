@@ -17,30 +17,45 @@ Vue.component("login", {
         this.password,
         () => {
           this.$router.push("/");
+          console.log("logged in");
         },
         error => {
           this.error = error.response.msg;
+          console.log(this.error);
         }
       );
     }
   },
-  template: `
-    <div id="login">
-      <span class="error" v-if='error'>{{ error }}</span>
-      <form @submit.prevent="login" @keydown='error = null'>
-        <div>
-          <label for="username">Username:</label>
-          <input type="text" id="username" v-model="username" placeholder="username">
+  template:
+    `
+    <div>
+      <div class="col-sm-6 login">
+        <message v-if="error" :message="'error': this.error"></message>
+        <div class="wrap">
+          <h2>Logge dich jetzt ein!</h2>
+          <hr>
+          <form @submit.prevent="login" @keydown='error = null'>
+            <div class="form-group">
+              <label for="username">Username:</label>
+              <input type="text" id="username" v-model="username" placeholder="username">
+            </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input type="password" id="password" v-model="password_hash" placeholder="password">
+            </div>
+            <div class="form-group">
+              <input class="btn btn-primary" type="submit" value="Login">
+            </div>
+          </form>
         </div>
-        <div>
-          <label for="password">Password:</label>
-          <input type="password" id="password" v-model="password" placeholder="password">
+      </div>
+      <div class="col-sm-6 guide">
+        <div class="wrap">
+          <h2>Noch kein Account?</h2>
+          <hr>
+          <p><router-link to="/register">Klicke hier um dich zu registrieren!</router-link></p>
         </div>
-        <div>
-          <input type="submit" value="login">
-        </div>
-      </form>
-      <router-link class="login-register" to="/register">Don' have an account? Click to register.</router-link>
+      </div>
     </div>
     `
 });

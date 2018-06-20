@@ -1,8 +1,15 @@
 Vue.component("message", {
+<<<<<<< HEAD
   props: [
     type: String,
     text: String
   ],
+=======
+  props: {
+    type: String,
+    text: String
+  },
+>>>>>>> aebccb2bdfa468a60b91c646b217eb06247aca45
   methods: {
     alertType: function() {
       return {

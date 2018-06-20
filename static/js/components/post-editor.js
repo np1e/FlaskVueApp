@@ -15,6 +15,7 @@ Vue.component("post-editor", {
   props: ["isUpdate"],
   methods: {
     submit() {
+      console.log("submitted")
       if (this.isUpdate) {
         this.updatePost();
       } else {
@@ -32,7 +33,7 @@ Vue.component("post-editor", {
         this.post,
         data => {
           this.post = data.post;
-          this.success = "User successfully updated";
+          this.success = "Post successfully updated";
         },
         error => {
           this.onError(error);
@@ -41,10 +42,14 @@ Vue.component("post-editor", {
       );
     },
     createPost() {
+      console.log("created")
       api.post(
         '/api/posts',
         this.post,
-        () => this.$router.push('/'),
+        () => {
+          this.success = "Post successfully updated."
+          this.$router.push('/');
+        },
         this.onError.bind(this)
       );
     },
@@ -58,21 +63,22 @@ Vue.component("post-editor", {
   },
   beforeRouteEnter(to, from, next) {
     api.get(`/api/posts/${to.params.id}`, data => {
-      next(vm => (vm.author = data.author ? vm.api.id === data.author : return false));
+      console.log("TEst");
+      next(vm => (vm.author = data.author ? vm.api.id === data.author : false));
     });
   },
   template: `
     <div class="col-sm-8 col-sm-offset-2 edit-post">
-      <form @submit-prevent="submit" @keydown="clearMessages()">
-        <message v-if="success" message="'success': this.success"></message>
-        <message v-if="error" message="'error': this.error"></message>
+      <form @submit.prevent="submit" @keydown="clearMessages()">
+        <message v-if="success" type="success" :text="this.success"></message>
+        <message v-if="error" type="error" :text="this.error"></message>
         <div class="form-group">
           <label for="content">Content</label>
           <textarea class="form-control" name="content" v-model="post.content"></textarea>
         </div>
-        <div class="form-group">
-          <input class="btn btn-primary" type="submit" value="isUpdate ? Edit : Create">
-        </div>
+        <!--<div class="form-group">-->
+          <input type="submit" :value="isUpdate ? 'Edit' : 'Create'">
+        <!--</div>-->
       </form>
     </div>
   `

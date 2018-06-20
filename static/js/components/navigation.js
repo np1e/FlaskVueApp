@@ -27,13 +27,24 @@ Vue.component('navigation', {
             <ul class="nav navbar-nav navbar-left">
               <li class="nav-item"><router-link to="/">Home</router-link></li>
               <div v-if='api.isLoggedIn'>
+<<<<<<< HEAD
+                <li class="nav-item"><router-link to="/profile/:id">My Profile</router-link></li>
+                <li class="nav-item"><a href="" v-on:click='logout()'>Log Out</a></li>
+                <li class="nav-item"><router-link to="/post/create">Create post</router-link></li>
+=======
                 <li class="nav-item"><router-link :to="{name: 'user', params: {id: api.id}}">My Profile</router-link></li>
 >>>>>>> 023f91d6c6509f0c0759b443512290d625ed5b18
                 <li class="nav-item"><a href="#" v-on:click='logout()'>Log Out</a></li>
                 <li class="nav-item"><router-link to="/create">Create post</router-link></li>
+<<<<<<< HEAD
             </ul>
             <ul class="nav navbar-nav navbar-left" v-else>
                 <li class="nav-item"><router-link to="/">Home</router-link></li>
+=======
+>>>>>>> 023f91d6c6509f0c0759b443512290d625ed5b18
+              </div>
+              <div v-else>
+>>>>>>> 2148d861bc5d5403c71b35945525522478d5d00a
                 <li class="nav-item"><router-link to="/login">Log In</router-link></li>
                 <li class="nav-item"><router-link to="/register">Register</router-link></li>
             </ul>

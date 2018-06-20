@@ -29,7 +29,7 @@ Vue.component("login", {
   template: `
     <div id="login" class="row">
       <div class="col-sm-6 login">
-        <message v-if="error" type="error" v-bind:text="this.error"></message>
+        <message v-if="error" type="error" :text="this.error"></message>
         <div class="wrap">
           <h2>Logge dich jetzt ein!</h2>
           <hr>

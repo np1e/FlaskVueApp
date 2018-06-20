@@ -1,9 +1,9 @@
 Vue.component("message", {
   props: [
-    "type",
-    "text"
+    type: String,
+    text: String
   ],
-  computed: {
+  methods: {
     alertType: function() {
       return {
         'alert-success': this.type === 'success',

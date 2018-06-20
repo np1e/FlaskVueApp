@@ -10,7 +10,7 @@ class User(db.Model):
     ''' Passwörter besser nicht im Plaintext speichern.
         Richtig wäre Salt + Hash(Salt + Password) in der Datenbank zu speichern.
     '''
-    password_hash = db.Column(db.String(255), name='password', unique=False, nullable=False)
+    password = db.Column(db.String(255), name='password', unique=False, nullable=False)
     # Versionierung der Rows um konkurrierender Änderungen zu entdecken
     version_id = db.Column(db.Integer, nullable=False)
     descrip = db.Column(db.String(140))

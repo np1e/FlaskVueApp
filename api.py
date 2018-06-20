@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import jwt_required
-from models import User
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from models import User, Post
 from database import db
 from sqlalchemy import or_
 from http import HTTPStatus
@@ -15,6 +15,17 @@ def get_users():
     return jsonify(users=[u._asdict() for u in users])
 
 ##TODO create/update/delete post
+@api.route('/posts', methods=['POST'])
+@jwt_required
+def create_post():
+    required_fields = {'content'}
+    post_json = request.json
+    current_user = get_jwt_identity()
+    post_json.update({'author_id': current_user})
+    new_post = Post(**post_json)
+    db.session.add(new_post)
+    db.session.commit()
+    return jsonify(new_post._asdict())
 
 
 @api.route('/users', methods=['POST'])

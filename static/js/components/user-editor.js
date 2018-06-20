@@ -49,10 +49,15 @@ Vue.component("user-editor", {
       );
     },
     createUser() {
+
+      console.log("registered")
       api.post(
         `/api/users`,
         this.user,
-        () => this.$router.push("/login"),
+        () => {
+          this.succes = "User successfully registered.";
+          this.$router.push("/login");
+        },
         this.onError.bind(this)
       );
     },
@@ -105,5 +110,7 @@ Vue.component("user-editor", {
         </div>
         <input type="submit" :value="isUpdate ? 'update' : 'register'">
       </form>
+    </div>
+  </div>
   `
 });

@@ -108,7 +108,7 @@ Vue.component("user-editor", {
           <label for="oldPwd">Old Password</label>
           <input class="form-control" id="oldPwd" type="password" name="oldPwd" v-model='user.oldPassword'>
         </div>
-        <input type="submit" :value="isUpdate ? 'update' : 'register'">
+        <input type="submit" :value="isUpdate ? 'update' : 'Register'">
       </form>
     </div>
   </div>

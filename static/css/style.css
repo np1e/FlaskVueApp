@@ -8,11 +8,6 @@ html {
     height: 100%;
 }
 
-body{
-    width: 70%;
-    margin: 0 auto;
-}
-
 button, input {
     border: 1px solid lightgray;
     border-radius: 5px;
@@ -24,15 +19,6 @@ input {
     font-size: 14px;
 }
 
-button, input[type="submit"]{
-    padding: 3px 10px;
-    background-color: #eee;
-    cursor: pointer;
-}
-
-button:active, input[type="submit"]:active{
-    background-color: #ddd;
-}
 
 input::placeholder{
     color: #666;
@@ -42,25 +28,16 @@ h2{
     font-weight: 800;
     margin-bottom: 1em;
     font-size:1.25em;
-    border-bottom: 1px dotted lightgray;
-}
-
-form label {
-    display: inline-block;
-    width: 15%;
 }
 
 form input {
-    width: 84%;
+    width: 100%;
 }
 
 form > div {
     margin-bottom: 0.5em;
 }
 
-form input[type="submit"] {
-    margin-left: 15.5%;
-}
 
 #navigation {
     padding-bottom: 0.5em;
@@ -115,6 +92,11 @@ a.login-register{
 .user-table{
     width: 100%;
 }
-.user-table button{ 
+.user-table button{
     width:100%;
+}
+
+.navbar {
+  margin-bottom: 0px !important;
+  border:1px solid #e6e6e6 !important;
 }

@@ -22,7 +22,7 @@ Vue.component('navigation', {
                 <li class="nav-item"><router-link to="/">Home</router-link></li>
                 <li class="nav-item"><router-link to="/profile/:id">My Profile</router-link></li>
                 <li class="nav-item"><a href="#" v-on:click='logout()'>Log Out</a></li>
-                <li class="nav-item"><router-link to="/create">Create post</router-link></li>
+                <li class="nav-item"><router-link to="/post/create">Create post</router-link></li>
             </ul>
             <ul class="nav navbar-nav navbar-left" v-else>
                 <li class="nav-item"><router-link to="/">Home</router-link></li>

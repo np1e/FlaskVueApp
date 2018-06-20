@@ -101,12 +101,13 @@ class ApiClient {
       this.headers,
       data => {
         this.state.token = data.access_token;
-        console.log(this.state.token.admin);
-        this.state.isAdmin = true ? this.state.token.admin == 1 : false;
-        console.log("test");
-        this.state.isRestricted = true ? this.state.token.restricted == 1 : false;
+        var payloadObj = KJUR.jws.JWS.readSafeJSONString(b64toutf8(this.state.token.split(".")[1]));
+        console.log(payloadObj);
+        this.state.isAdmin = true ? payloadObj.user_claims.admin == 1 : false;
+        this.state.isRestricted = true ? payloadObj.user_claims.restricted == 1 : false;
+        console.log("admin: " + this.state.isAdmin + " // " + "restricted: " + this.state.isRestricted);
         this.state.username = username;
-        this.state.id = this.state.token.id;
+        this.state.id = payloadObj.user_claims.id;
         this.state.isLoggedIn = true;
         this.storeState();
         success_callback();

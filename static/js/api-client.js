@@ -101,7 +101,9 @@ class ApiClient {
       this.headers,
       data => {
         this.state.token = data.access_token;
+        console.log(this.state.token.admin);
         this.state.isAdmin = true ? this.state.token.admin == 1 : false;
+        console.log("test");
         this.state.isRestricted = true ? this.state.token.restricted == 1 : false;
         this.state.username = username;
         this.state.id = this.state.token.id;

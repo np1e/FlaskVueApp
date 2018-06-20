@@ -22,7 +22,7 @@ Vue.component('navigation', {
             <ul class="nav navbar-nav navbar-left">
               <li class="nav-item"><router-link to="/">Home</router-link></li>
               <div v-if='api.isLoggedIn'>
-                <li class="nav-item"><router-link to="/profile/:id">My Profile</router-link></li>
+                <li class="nav-item"><router-link :to="{name: 'user', params: {id: api.id}}">My Profile</router-link></li>
                 <li class="nav-item"><a href="#" v-on:click='logout()'>Log Out</a></li>
                 <li class="nav-item"><router-link to="/create">Create post</router-link></li>
               </div>

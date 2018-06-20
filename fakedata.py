@@ -19,7 +19,7 @@ def fake_user(**kwargs):
 def setup_db():
     with app.app_context():
         db.create_all()
-        db.session.add(fake_user(username="admin", password="admin"))
+        db.session.add(fake_user(username="admin", password="admin", admin=1))
         for i in range(10):
             db.session.add(fake_user())
         db.session.commit()

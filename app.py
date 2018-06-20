@@ -19,6 +19,7 @@ class UserObject:
     def __init__(self, username, roles):
         self.username = username
         self.roles = roles
+        self.id = id
 
 
 @jwt.user_identity_loader
@@ -59,7 +60,7 @@ def login():
     if user is None:
         return jsonify({"msg": "Bad username or password"}),  HTTPStatus.UNAUTHORIZED
 
-    userObj = UserObject(username=username, roles=[user.admin, user.restricted])
+    userObj = UserObject(username=username, roles=[user.admin, user.restricted], id=user.id)
 
     # Identity can be any data that is json serializable
     access_token = create_access_token(identity=userObj)

@@ -22,9 +22,6 @@ def create_post():
     post_json = request.json
     current_user = get_jwt_identity()
     post_json.update({'author_id': current_user})
-    ##max_post = Post.query.filter(max('id')).all()
-    print(current_user)
-    print(post_json)
     new_post = Post(**post_json)
     db.session.add(new_post)
     db.session.commit()

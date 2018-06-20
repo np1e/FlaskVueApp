@@ -15,7 +15,7 @@ Vue.component("user-editor", {
         username: "",
         email: "",
         descrip: "",
-        password_hash: "",
+        password: "",
       };
     }
     return data;
@@ -86,8 +86,8 @@ Vue.component("user-editor", {
       <h2>Account bearbeiten:</h2>
       <hr>
       <form @submit.prevent="submit" @keydown="clearMessages()">
-        <message v-if="success" message="'success': this.success"></message>
-        <message v-if="error" message="'error': this.error"></message>
+        <message v-if="success" type="success"  :text="this.success"></message>
+        <message v-if="error" type="error" :text="this.error"></message>
         <div class="form-group">
           <label for="username">Username</label>
           <input class="form-control" id="username" type="text" name="username" v-model='user.username'>
@@ -102,7 +102,7 @@ Vue.component("user-editor", {
         </div>
         <div class="form-group">
           <label for="newPwd">New Password</label>
-          <input class="form-control" id="newPwd" type="password" name="newPwd" v-model='user.password_hash'>
+          <input class="form-control" id="newPwd" type="password" name="newPwd" v-model='user.password'>
         </div>
         <div class="form-group" v-if="isUpdate">
           <label for="oldPwd">Old Password</label>

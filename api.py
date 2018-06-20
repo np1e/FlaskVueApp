@@ -14,6 +14,8 @@ def get_users():
     users = User.query.all()
     return jsonify(users=[u._asdict() for u in users])
 
+##TODO create/update/delete post
+
 
 @api.route('/users', methods=['POST'])
 def create_user():

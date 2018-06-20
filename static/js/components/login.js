@@ -40,7 +40,7 @@ Vue.component("login", {
             </div>
             <div class="form-group">
               <label for="password">Password:</label>
-              <input type="password" id="password" v-model="password_hash" placeholder="password">
+              <input type="password" id="password" v-model="password" placeholder="password">
             </div>
             <div class="form-group">
               <input class="btn btn-primary" type="submit" value="Login">

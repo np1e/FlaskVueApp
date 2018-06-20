@@ -105,5 +105,7 @@ Vue.component("user-editor", {
         </div>
         <input type="submit" :value="isUpdate ? 'update' : 'register'">
       </form>
+    </div>
+  </div>
   `
 });

@@ -16,7 +16,7 @@ jwt = JWTManager(app)
 app.register_blueprint(api, url_prefix='/api')
 
 class UserObject:
-    def __init__(self, username, roles):
+    def __init__(self, username, roles, id):
         self.username = username
         self.roles = roles
         self.id = id

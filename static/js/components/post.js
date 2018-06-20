@@ -3,7 +3,7 @@ Vue.component("post", {
     return {
       post: null,
       author: null,
-      api = api.state
+      api : api.state
     };
   },
   methods: {

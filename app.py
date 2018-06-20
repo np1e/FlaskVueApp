@@ -15,6 +15,23 @@ jwt = JWTManager(app)
 # register the api
 app.register_blueprint(api, url_prefix='/api')
 
+class UserObject:
+    def __init__(self, username, roles):
+        self.username = username
+        self.roles = roles
+
+
+@jwt.user_identity_loader
+def user_identity_lookup(user):
+    return user.username
+
+@jwt.user_claims_loader
+def add_claims_to_access_token(user):
+    return {
+        'admin': user.roles[0],
+        "restricted": user.roles[1],
+        "id": user.id
+    }
 
 @app.route('/')
 def hello_world():
@@ -42,9 +59,12 @@ def login():
     if user is None:
         return jsonify({"msg": "Bad username or password"}),  HTTPStatus.UNAUTHORIZED
 
+    userObj = UserObject(username=username, roles=[user.admin, user.restricted])
+
     # Identity can be any data that is json serializable
-    access_token = create_access_token(identity=user.email)
-    return jsonify(access_token=access_token, admin=user.admin, restricted=user.restricted, id=user.id)
+    access_token = create_access_token(identity=userObj)
+    ret = {'access_token': access_token}
+    return jsonify(ret)
 
 
 if __name__ == '__main__':

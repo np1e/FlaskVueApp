@@ -101,10 +101,10 @@ class ApiClient {
       this.headers,
       data => {
         this.state.token = data.access_token;
-        this.state.isAdmin = true ? data.admin == 1 : false;
-        this.state.isRestricted = true ? data.restricted == 1 : false;
+        this.state.isAdmin = true ? this.state.token.admin == 1 : false;
+        this.state.isRestricted = true ? this.state.token.restricted == 1 : false;
         this.state.username = username;
-        this.state.id = data.id;
+        this.state.id = this.state.token.id;
         this.state.isLoggedIn = true;
         this.storeState();
         success_callback();

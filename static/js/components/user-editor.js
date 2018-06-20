@@ -102,7 +102,7 @@ Vue.component("user-editor", {
         </div>
         <div class="form-group">
           <label for="newPwd">New Password</label>
-          <input class="form-control" id="newPwd" type="password" name="newPwd" v-model='user.password_hash'>
+          <input class="form-control" id="newPwd" type="password" name="newPwd" v-model='user.password'>
         </div>
         <div class="form-group" v-if="isUpdate">
           <label for="oldPwd">Old Password</label>

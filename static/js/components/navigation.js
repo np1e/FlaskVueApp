@@ -18,7 +18,7 @@ Vue.component('navigation', {
   template: `
   <nav class="navbar">
         <div class="container-fluid">
-          <div class="collapse navbar-collapse">
+          <div class="navbar">
             <ul class="nav navbar-nav navbar-left">
               <li class="nav-item"><router-link to="/">Home</router-link></li>
               <div v-if='api.isLoggedIn'>

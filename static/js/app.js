@@ -81,12 +81,8 @@
     el: "#vue-app",
     router: router,
     template: `
-<<<<<<< HEAD
-      <div id='vue-app' class="container">
+      <div class="container">
         <h2>NotTwitter</h2>
-=======
-      <div id='vue-app' class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
->>>>>>> 023f91d6c6509f0c0759b443512290d625ed5b18
         <navigation></navigation>
         <message></message>
         <div>

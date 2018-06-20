@@ -24,7 +24,7 @@ class UserObject:
 
 @jwt.user_identity_loader
 def user_identity_lookup(user):
-    return user.username
+    return user.id
 
 @jwt.user_claims_loader
 def add_claims_to_access_token(user):

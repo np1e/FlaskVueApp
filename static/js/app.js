@@ -26,7 +26,7 @@
     },
     {
       path: "/user/:id",
-      name: "profile",
+      name: "user",
       component: Vue.component("user")
     },
     { path: "/admin-panel", component: Vue.component("admin-panel") },
@@ -82,7 +82,6 @@
     router: router,
     template: `
       <div id='vue-app' class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
-        <h2>Flask and Vue Boilerplate</h2>
         <navigation></navigation>
         <message></message>
         <div class="col-md-12 col-sm-12">

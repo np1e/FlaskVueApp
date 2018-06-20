@@ -12,14 +12,14 @@ def fake_user(**kwargs):
     return User(
         username=kwargs.get('username', user['username']),
         email=user['mail'],
-        password_hash=kwargs.get('password', fake.password())
+        password=kwargs.get('password', fake.password())
     )
 
 
 def setup_db():
     with app.app_context():
         db.create_all()
-        db.session.add(fake_user(username="admin", password_hash="admin"))
+        db.session.add(fake_user(username="admin", password="admin"))
         for i in range(10):
             db.session.add(fake_user())
         db.session.commit()

@@ -30,8 +30,8 @@ def user_identity_lookup(user):
 def add_claims_to_access_token(user):
     return {
         'admin': user.roles[0],
-        "restricted": user.roles[1],
-        "id": user.id
+        'restricted': user.roles[1],
+        'id': user.id
     }
 
 @app.route('/')

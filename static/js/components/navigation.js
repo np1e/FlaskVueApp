@@ -20,7 +20,7 @@ Vue.component('navigation', {
           <div class="navbar row">
             <ul class="nav navbar-nav navbar-left" v-if='api.isLoggedIn'>
                 <li class="nav-item"><router-link to="/">Home</router-link></li>
-                <li class="nav-item"><router-link to="/profile/:id">My Profile</router-link></li>
+                <li class="nav-item"><router-link :to="'/user/'+ api.id">My Profile</router-link></li>
                 <li class="nav-item"><a href="#" v-on:click='logout()'>Log Out</a></li>
                 <li class="nav-item"><router-link to="/post/create">Create post</router-link></li>
             </ul>
@@ -35,7 +35,6 @@ Vue.component('navigation', {
                   <ul class="dropdown-menu">
                     <li><router-link to="/user-table">Users</router-link></li>
                     <li><router-link to="/admin-panel">Reviewpanel <span class="badge">5</span></router-link></li>
-
                   </ul>
                 </li>
               </div>

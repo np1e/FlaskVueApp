@@ -19,8 +19,8 @@
     { path: "/login", component: Vue.component("login") },
     { path: "/register", component: Vue.component("registration") },
     {
-      path: "/user/edit/:id",
-      name: "user",
+      path: "/user/:id/edit",
+      name: "userEdit",
       component: Vue.component("user-editor"),
       props: { isUpdate: true }
     },
@@ -32,8 +32,8 @@
     { path: "/admin-panel", component: Vue.component("admin-panel") },
     { path: "/post/create", component: Vue.component("create")},
     {
-      path: "/post/edit/:id",
-      name: "post",
+      path: "/post/:id/edit",
+      name: "postEdit",
       component: Vue.component("post-editor"),
       props: { isUpdate: true }
     },
@@ -82,7 +82,6 @@
     router: router,
     template: `
       <div class="container">
-        <h2>NotTwitter</h2>
         <navigation></navigation>
         <message></message>
         <div>

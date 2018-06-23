@@ -36,7 +36,7 @@ Vue.component("user-table", {
         <tr v-for='user in users'>
             <td>{{user.username}}</td>
             <td>{{user.email}}</td>
-            <td><router-link :to="{name: 'user', params: {id: user.id}}" tag="button">edit</router-link></td>
+            <td><router-link :to="{name: 'userEdit', params: {id: user.id}}" tag="button">edit</router-link></td>
             <td><button type="button" @click="deleteUser(user.id)">delete</button></td>
         </tr>
     </table>

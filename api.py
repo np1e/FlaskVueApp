@@ -38,6 +38,14 @@ def get_post_by_id(id):
     else:
         return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
 
+@api.route('/search/<string:query>', methods=['GET'])
+def search(query):
+   print("search in api.py")
+   print(query)
+   resultposts = Post.query.filter(Post.content == query).first()
+   print(resultposts._asdict())
+   #resultposts = Post.query.filter(Post.content.contains('query'))
+   return jsonify({"result": resultposts._asdict()})
 
 @api.route('/users', methods=['POST'])
 def create_user():

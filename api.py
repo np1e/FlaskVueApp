@@ -27,6 +27,17 @@ def create_post():
     db.session.commit()
     return jsonify(new_post._asdict())
 
+@api.route('/posts/<int:id>', methods=['GET'])
+def get_post_by_id(id):
+    post = Post.query.filter(Post.id == id).first()
+    user_id = post.author_id
+    user = User.query.filter(User.id == user_id).first()
+    if post:
+        print(post._asdict())
+        return jsonify(post=post._asdict(), author=user._asdict())
+    else:
+        return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
+
 
 @api.route('/users', methods=['POST'])
 def create_user():

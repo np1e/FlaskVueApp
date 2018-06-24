@@ -35,7 +35,7 @@ Vue.component("user-editor", {
       });
     },
     updateUser() {
-      console.log(api.state.access_token);
+      console.log(this.user.registered);
       api.put(
         `/api/users/${this.user.id}`,
         this.user,

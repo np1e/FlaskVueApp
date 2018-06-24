@@ -20,11 +20,12 @@ Vue.component("user", {
       api.get(`/api/users/${this.id}`, data => {
         this.user = data.user;
         this.posts = data.posts;
+        console.log(data.posts);
       });
       api.get(`/api/follower/${this.id}`, data => {
         this.follower = data.follower;
         console.log(data.follower);
-      })
+      });
       console.log(this.posts);
     },
     follow() {
@@ -64,7 +65,7 @@ Vue.component("user", {
       <a v-else-if="api.id !== user.id && { follows }" class="action" v-on:click="unfollow()">Unfollow</a>
     </div>
     <div class="col-sm-8 posts">
-      <post v-for="post in posts" :key="post.id"></post>
+      <post v-for="post in posts" :key="post.id" v-bind:post="post"></post>
     </div>
   </div>
     `

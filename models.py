@@ -58,6 +58,7 @@ class User(db.Model):
 
     def follow(self, user):
         if not self.is_following(user):
+            print("follow")
             self.followed.append(user)
 
     def unfollow(self, user):

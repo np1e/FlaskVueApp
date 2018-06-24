@@ -35,12 +35,14 @@ Vue.component("user-editor", {
       });
     },
     updateUser() {
+      console.log(api.state.access_token);
       api.put(
         `/api/users/${this.user.id}`,
         this.user,
         data => {
           this.user = data.user;
           this.success = "User successfully updated.";
+          this.$router.push({ name: 'user', params: { id: this.user.id }});
         },
         error => {
           this.onError(error);

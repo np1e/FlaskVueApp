@@ -59,10 +59,13 @@ def get_post_by_id(id):
 def search(query):
    print("search in api.py")
    print(query)
-   resultposts = Post.query.filter(Post.content == query).first()
-   print(resultposts._asdict())
-   #resultposts = Post.query.filter(Post.content.contains('query'))
-   return jsonify({"result": resultposts._asdict()})
+   resultposts = Post.query.filter(Post.content.contains(query)).all()
+   print(resultposts)
+   if resultposts:
+       print(resultposts)
+       return jsonify(resultposts=[result._asdict() for result in resultposts])
+   else:
+       return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
 
 @api.route('/users', methods=['POST'])
 def create_user():

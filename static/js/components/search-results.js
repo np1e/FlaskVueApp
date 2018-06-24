@@ -1,8 +1,14 @@
 Vue.component("search-results", {
-    props: ['title'],
+    data() {
+        return {
+            resultposts : this.$route.params.results,
+            error: this.$route.params.error,
+        };
+    },
     template: `
     <div>
-        {{ title }}
+      {{ error }}
+      <post v-for="post in resultposts" :key="post.id" v-bind:post="post"></post>
     </div>
     `
 })

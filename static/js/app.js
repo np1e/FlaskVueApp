@@ -42,7 +42,9 @@
       name: "post",
       component: Vue.component("post")
     },
-    { path: "/user-table", component: Vue.component("user-table")}
+      { path: "/user-table", component: Vue.component("user-table")},
+      { path: "/search-results", name: "search-results", component: Vue.component("search-results")},
+
   ];
   /** Initalisierung des Routers, mit den vorher definierten Komponenten */
   const router = new VueRouter({

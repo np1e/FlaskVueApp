@@ -15,7 +15,20 @@ def get_users():
     users = User.query.all()
     return jsonify(users=[u._asdict() for u in users])
 
+
 ##TODO create/update/delete post
+@api.route('/posts/<int:id>', methods=['DELETE'])
+@jwt_required
+def delete_post(id):
+    post = Post.query.filter_by(id=id).first()
+    if post:
+        db.session.delete(post)
+        db.session.commit()
+        return jsonify({"msg": "Post with id %s deleted." % id})
+    else:
+        return jsonify({"msg": "Post with id %s not found." % id}), HTTPStatus.NOT_FOUND
+
+
 @api.route('/posts', methods=['POST'])
 @jwt_required
 def create_post():
@@ -33,11 +46,26 @@ def get_post_by_id(id):
     post = Post.query.filter(Post.id == id).first()
     user_id = post.author_id
     user = User.query.filter(User.id == user_id).first()
+    post_dict = post._asdict()
+    post_dict.update({'avatar': user.avatar})
+    post_dict.update({'author': user.username})
     if post:
-        return jsonify(post=post._asdict(), author=user._asdict())
+        print(post_dict)
+        return jsonify(post=post_dict)
     else:
         return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
 
+@api.route('/search/<string:query>', methods=['GET'])
+def search(query):
+   print("search in api.py")
+   print(query)
+   resultposts = Post.query.filter(Post.content.contains(query)).all()
+   print(resultposts)
+   if resultposts:
+       print(resultposts)
+       return jsonify(resultposts=[result._asdict() for result in resultposts])
+   else:
+       return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
 
 @api.route('/users', methods=['POST'])
 def create_user():

@@ -1,20 +1,27 @@
 Vue.component("search-bar", {
-  data() {
-    return {
-      query: "",
-      error: null
-    };
-  },
-  methods: {
-    submit() {
-      return null;
+    data() {
+        return {
+            query: "",
+            error: null
+        };
     },
-    search() {
-        return null;
-    }
-  },
-  template: `
-    <form class = "navbar-form navbar-left" @submit-prevent="submit">
+    methods: {
+        search() {
+            api.get(
+                `/api/search/${this.query}`, data => {
+                    console.log("searched");
+                    this.$router.push({ name: 'search-results', params: { results: data.resultposts }});
+                },
+                error => {
+                    this.error = error.response.msg;
+                    console.log(this.error);
+                    this.$router.push({ name: 'search-results', params: { error: "No matching posts found" }});
+                }
+            );
+        }
+    },
+    template: `
+    <form class = "navbar-form navbar-left" @submit.prevent="search">
         <div class="input-group form-group">
           <input type="text" v-model="query" class="form-control mr-sm-2" placeholder="Search" name="query">
           <span class="input-group-btn">

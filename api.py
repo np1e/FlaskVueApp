@@ -4,6 +4,7 @@ from models import User, Post
 from database import db
 from sqlalchemy import or_
 from http import HTTPStatus
+from datetime import datetime
 
 api = Blueprint('api', __name__)
 
@@ -62,7 +63,8 @@ def create_user():
 def get_user(id):
     user = User.query.filter_by(id=id).first()
     if user:
-        return jsonify(user=user._asdict())
+        print(jsonify(user._asdict()))
+        return jsonify(user=user._asdict(), test="test");
     else:
         return jsonify({"msg": "User with %s not found." % id}), HTTPStatus.NOT_FOUND
 
@@ -71,9 +73,14 @@ def get_user(id):
 @jwt_required
 def update_user(id):
     updated_user = request.json
+    print(updated_user)
     if updated_user is None or id != updated_user.get('id'):
         return jsonify({"msg": "No or wrong user was provided."}), HTTPStatus.BAD_REQUEST
     user = User.query.with_for_update().filter_by(id=updated_user['id']).first()
+
+    print(updated_user["registered"])
+    updated_user["registered"] = datetime.strptime(updated_user["registered"], '%a, %d %b %Y %H:%M:%S %Z')
+
     if user:
         if user.version_id == updated_user['version_id']:
             user.update(updated_user)
@@ -99,3 +106,10 @@ def delete_user(id):
         return jsonify({"msg": "User with id %s deleted." % id})
     else:
         return jsonify({"msg": "User with id %s not found." % id}), HTTPStatus.NOT_FOUND
+
+@api.route('/follower/<int:id>', methods=['GET'])
+def get_follower(id):
+    user = User.query.filter_by(id=id).first()
+    follower = user.get_follower()
+    print([f._asdict() for f in follower])
+    return jsonify(follower=[f._asdict() for f in follower])

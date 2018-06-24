@@ -25,6 +25,7 @@ Vue.component("user", {
         this.follower = data.follower;
         console.log(data.follower);
       })
+      console.log(this.posts);
     },
     follow() {
 

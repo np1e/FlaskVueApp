@@ -32,8 +32,13 @@ Vue.component("user", {
       api.get(`/api/users/${to.params.id}`, data => {
         next(vm => {
           vm.user = data.user;
+          vm.posts = data.posts;
+          vm.follower = data.follower;
         });
       });
+    },
+    refresh(){
+      window.location.reload(true);
     },
     follow() {
 

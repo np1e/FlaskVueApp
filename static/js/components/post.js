@@ -13,7 +13,7 @@ Vue.component("post", {
     },
     deletePost(id){
       api.del(`/api/posts/${id}`, data => {
-        this.$parent.$router.go();
+        this.$parent.$options.methods.refresh();
       });
     }
   },

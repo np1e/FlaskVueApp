@@ -22,7 +22,7 @@ Vue.component("user", {
         this.posts = data.posts;
         this.follows = data.follows;
       });
-      console.log(this.user);
+      console.log(this.posts);
     },
     follow() {
 

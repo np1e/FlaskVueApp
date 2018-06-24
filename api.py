@@ -55,6 +55,23 @@ def get_post_by_id(id):
     else:
         return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
 
+@api.route('/posts/users/<int:id>', methods=['GET'])
+def get_posts_by_user(id):
+    posts = Post.query.filter(author_id.id == id).all()
+    user = User.query.filter(User.id == id).first()
+    posts_lst = []
+    for post in posts:
+        post_dict = post._asdict()
+        post_dict.update({'avatar': user.avatar})
+        post_dict.update({'author': user.username})
+        posts_lst.append(post_dict)
+    if post:
+        print(posts_lst)
+        return jsonify(posts=posts_lst)
+    else:
+        return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
+
+
 @api.route('/search/<string:query>', methods=['GET'])
 def search(query):
    print("search in api.py")

@@ -1,5 +1,5 @@
 from database import db
-import datetime as dt
+from datetime import datetime
 
 
 class User(db.Model):
@@ -14,7 +14,7 @@ class User(db.Model):
     # Versionierung der Rows um konkurrierender Änderungen zu entdecken
     version_id = db.Column(db.Integer, nullable=False)
     descrip = db.Column(db.String(140))
-    registered = db.Column(db.DateTime(timezone=True), default=dt.datetime.utcnow, nullable = False)
+    registered = db.Column(db.DateTime, default=datetime.utcnow, nullable = False)
     admin = db.Column(db.Integer, default=0)
     restricted = db.Column(db.Integer, default=0)
     avatar = db.Column(db.Integer, default=0)
@@ -52,7 +52,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     content = db.Column(db.String(300), nullable = False)
-    created = db.Column(db.DateTime(timezone=True), default=dt.datetime.utcnow, nullable = False)
+    created = db.Column(db.DateTime, default=datetime.utcnow, nullable = False)
     reviewed = db.Column(db.Integer, default=0, nullable=False)
 
     def __repr__(self):

@@ -1,6 +1,10 @@
 from database import db
 from datetime import datetime
 
+followers = db.Table('followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+)
 
 class User(db.Model):
 
@@ -19,8 +23,13 @@ class User(db.Model):
     restricted = db.Column(db.Integer, default=0)
     avatar = db.Column(db.Integer, default=0)
     posts = db.relationship('Post', backref='user', lazy=True)
-    #follower = db.relationship('Follows', backref='user', lazy=True)
-    #follows = db.relationship('Follows', backref='user', lazy=True)
+    followed = db.relationship(
+        'User', secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref('followers', lazy='dynamic'),
+        lazy='dynamic'
+    )
 
     __mapper_args__ = {
         "version_id_col": version_id
@@ -47,6 +56,21 @@ class User(db.Model):
             if hasattr(self, key):
                 setattr(self, key, value)
 
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
+
+    def get_follower(self):
+        return self.followed
+
 class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -65,25 +89,6 @@ class Post(db.Model):
             content=self.content,
             created=self.created,
             reviewed=self.reviewed
-        )
-
-    def update(self, json):
-        for key, value in json.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
-
-class Follows(db.Model):
-
-    follower_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False)
-
-    def __repr__(self):
-        return '<User %(follower_id)s follows User %(user_id)s>' %self.__dict__
-
-    def _asdict(self):
-        return dict(
-            follower_id=self.follower_id,
-            user_id= self.user_id
         )
 
     def update(self, json):

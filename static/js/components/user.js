@@ -28,6 +28,13 @@ Vue.component("user", {
       });
       console.log(this.posts);
     },
+    beforeRouteEnter(to, from, next) {
+      api.get(`/api/users/${to.params.id}`, data => {
+        next(vm => {
+          vm.user = data.user;
+        });
+      });
+    },
     follow() {
 
     },

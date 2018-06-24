@@ -10,6 +10,11 @@ Vue.component("post", {
       api.get(`/api/posts/${id}`, data => {
         this.post = data.post
       });
+    },
+    deletePost(id){
+      api.del(`/api/posts/${id}`, data => {
+        this.$parent.$router.go();
+      });
     }
   },
   props: ['post'],
@@ -38,7 +43,7 @@ Vue.component("post", {
       <p class="clearfix">{{ post.created.toString() }}</p>
       <a v-if="post.reviewed === 1" class="btn btn-success" v-on:click="releasePost(post.id)" href="#">Release</a>
       <a v-if="api.admin === 1" class="btn btn-danger" v-on:click="deletePost(post.id)" href="#">Delete</a>
-      <a v-else-if="api.id === post.author_id" class="btn btn-danger" v-on:click="deletePost(post.id)" href="#">Delete</a>
+      <a v-else-if="api.id === post.author_id" class="btn btn-danger" v-on:click="deletePost(post.id)" >Delete</a>
     </div>
     <div class="panel-body">
       {{ post.content }}

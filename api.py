@@ -15,7 +15,20 @@ def get_users():
     users = User.query.all()
     return jsonify(users=[u._asdict() for u in users])
 
+
 ##TODO create/update/delete post
+@api.route('/posts/<int:id>', methods=['DELETE'])
+@jwt_required
+def delete_post(id):
+    post = Post.query.filter_by(id=id).first()
+    if post:
+        db.session.delete(post)
+        db.session.commit()
+        return jsonify({"msg": "Post with id %s deleted." % id})
+    else:
+        return jsonify({"msg": "Post with id %s not found." % id}), HTTPStatus.NOT_FOUND
+
+
 @api.route('/posts', methods=['POST'])
 @jwt_required
 def create_post():

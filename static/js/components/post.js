@@ -34,7 +34,7 @@ Vue.component("post", {
     <div class="panel-heading">
       <!--<img v-if="this.user.avatar === 1" :src="{ imgUrl }">
       <img v-else src="/static/img/default.gif">-->
-      <router-link :to="{name: 'profile', params: {id: post.author_id}}"><h1>{{ post.author }}</h1></router-link>
+      <router-link :to="{name: 'user', params: {id: post.author_id}}"><h1>{{ post.author }}</h1></router-link>
       <p class="clearfix">{{ post.created.toString() }}</p>
       <a v-if="post.reviewed === 1" class="btn btn-success" v-on:click="releasePost(post.id)" href="#">Release</a>
       <a v-if="api.admin === 1" class="btn btn-danger" v-on:click="deletePost(post.id)" href="#">Delete</a>

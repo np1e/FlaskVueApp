@@ -33,9 +33,12 @@ def get_post_by_id(id):
     post = Post.query.filter(Post.id == id).first()
     user_id = post.author_id
     user = User.query.filter(User.id == user_id).first()
+    post_dict = post._asdict()
+    post_dict.update({'avatar': user.avatar})
+    post_dict.update({'author': user.username})
     if post:
-        print(post._asdict())
-        return jsonify(post=post._asdict(), author=user._asdict())
+        print(post_dict)
+        return jsonify(post=post_dict)
     else:
         return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
 

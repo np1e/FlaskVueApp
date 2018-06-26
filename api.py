@@ -46,7 +46,7 @@ def get_post_by_id():
     ids = request.json
     post = Post.query.filter(Post.author_id.in_(ids)).order_by(Post.content.desc()).all()
     #user_id = post.author_id
-    user = User.query.filter(User.id == user_id).first()
+    #user = User.query.filter(User.id == user_id).first()
     #post_dict = post._asdict()
     #post = post.join(User, Post.author_id = User.id)
     #post_dict.update({'avatar': user.avatar})

@@ -35,42 +35,45 @@ Vue.component("user", {
         next(vm => {
           vm.user = data.user;
           vm.posts = data.posts;
-          vm.follower = data.follower;
+          //vm.follower = data.follower;
         });
       });
     },
     refresh(){
       window.location.reload(true);
     },
-    follow() {
-      json = {"id": this.api.id};
+    setFollow() {
+
       console.log("follow")
-      api.put(
-        `/api/follower/${this.id}`,
-        json,
-        () => {
-          this.success = "Now following user " + this.user.username;
-          this.refresh();
-        },
-        error => {
-          this.onError(error);
-          this.refresh();
-        }
-      );
-    },
-    unfollow() {
-      api.del(
-        `/api/follower/${this.id}`,
-        {"id": api.id},
-        () => {
-          this.success = "No longer following " + this.user.username;
-          this.refresh();
-        },
-        error => {
-          this.onError(error);
-          this.refresh();
-        }
-      );
+      if(!this.follows) {
+        json = {"type": "add", "id": this.api.id};
+        api.put(
+          `/api/follower/${this.id}`,
+          json,
+          () => {
+            this.success = "Now following user " + this.user.username;
+            this.refresh();
+          },
+          error => {
+            this.onError(error);
+            this.refresh();
+          }
+        );
+      } else {
+        json = {"type": "delete", "id": this.api.id};
+        api.put(
+          `/api/follower/${this.id}`,
+          json,
+          () => {
+            this.success = "No longer following " + this.user.username;
+            this.refresh();
+          },
+          error => {
+            this.onError(error);
+            this.refresh();
+          }
+        );
+      }
     },
     refresh() {
       this.fetchData();
@@ -87,13 +90,18 @@ Vue.component("user", {
       return imageURL;
     },
     follows: function() {
+      let follows = null;
       this.follower.forEach(function(f) {
-        if(api.id === f.id) {
+        console.log(this.is)
+        if(api.state.id == f.id) {
           console.log(f.id + " follows " + this.id);
-          return true;
+          follows= true;
+          return;
         }
+        follows= false;
+        return;
       });
-      return false;
+      return follows;
     }
   },
   template: `
@@ -105,7 +113,7 @@ Vue.component("user", {
       <span v-if="this.user.descrip">Description: {{ this.user.descrip }}</span><br>
       <router-link v-if="api.id === this.user.id" class="action" :to="{name: 'userEdit', params: {id: api.id}}">Edit your profile</router-link>
       <span>Follower: {{ this.follower.length }}</span>
-      <button v-if="api.id !== user.id && !follows" class="btn" v-on:click="follow()">Follow</button>
+      <button v-if="api.id !== user.id" class="btn" v-on:click="setFollow()">{{ follows ? 'Unfollow' : 'Follow'}}</button>
       <button v-else-if="api.id !== user.id && follows" class="btn" v-on:click="unfollow()">Unfollow</button>
     </div>
     <div class="col-sm-8 posts">

@@ -60,11 +60,11 @@ def get_post_by_id(id):
 def search():
     post_json = request.json
     if post_json["order"] == "desc":
-        resultposts = Post.query.filter(Post.content.contains(post_json["query"])).order_by(Post.content.desc()).all()
+        #resultposts = (Post.query.filter(Post.content.contains(post_json["query"])).order_by(Post.content.asc()).all()
+        resultposts = ((Post.query.filter(Post.content.contains(post_json["query"]))).join(User, User.id == Post.author_id)).order_by(Post.content.desc()).all()
     else:
-        resultposts = Post.query.filter(Post.content.contains(post_json["query"])).order_by(Post.content.asc()).all()
+        resultposts = ((Post.query.filter(Post.content.contains(post_json["query"]))).join(User, User.id == Post.author_id)).order_by(Post.content.asc()).all()
     if resultposts:
-        print(resultposts)
         return jsonify(resultposts=[result._asdict() for result in resultposts])
     else:
         return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND

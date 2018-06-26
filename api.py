@@ -55,7 +55,6 @@ def get_post_by_id(id):
     else:
         return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
 
-<<<<<<< HEAD
 @api.route('/search', methods=['POST'])
 @jwt_required
 def search():
@@ -69,36 +68,6 @@ def search():
         return jsonify(resultposts=[result._asdict() for result in resultposts])
     else:
         return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
-=======
-@api.route('/posts/users/<int:id>', methods=['GET'])
-def get_posts_by_user(id):
-    posts = Post.query.filter(author_id.id == id).all()
-    user = User.query.filter(User.id == id).first()
-    posts_lst = []
-    for post in posts:
-        post_dict = post._asdict()
-        post_dict.update({'avatar': user.avatar})
-        post_dict.update({'author': user.username})
-        posts_lst.append(post_dict)
-    if post:
-        print(posts_lst)
-        return jsonify(posts=posts_lst)
-    else:
-        return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
-
-
-@api.route('/search/<string:query>', methods=['GET'])
-def search(query):
-   print("search in api.py")
-   print(query)
-   resultposts = Post.query.filter(Post.content.contains(query)).all()
-   print(resultposts)
-   if resultposts:
-       print(resultposts)
-       return jsonify(resultposts=[result._asdict() for result in resultposts])
-   else:
-       return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
->>>>>>> ebc1c60263ac71441627e513037dc83324359e82
 
 @api.route('/users', methods=['POST'])
 def create_user():
@@ -179,6 +148,12 @@ def delete_user(id):
         return jsonify({"msg": "User with id %s deleted." % id})
     else:
         return jsonify({"msg": "User with id %s not found." % id}), HTTPStatus.NOT_FOUND
+
+@api.route('/following/<int:id>', methods=['GET'])
+def get_following(id):
+    user = User.query.filter_by(id=id).first()
+    following = user.get_followed()
+    return jsonify(following=[f._asdict() for f in following])
 
 @api.route('/follower/<int:id>', methods=['GET'])
 def get_follower(id):

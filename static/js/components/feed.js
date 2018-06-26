@@ -11,13 +11,13 @@ Vue.component("feed", {
   },
   methods: {
     get_follower(){
-      api.get(`/api/followers/${this.id}`, data => {
-        this.follower = data.follower;
+      api.get(`/api/following/${this.id}`, data => {
+        this.following = data.following;
       });
     },
     getFeed(){
       this.get_follower();
-      for (x in this.follower) {
+      for (x in this.following) {
         this.posts += getPosts(x.id);
       }
     },
@@ -29,13 +29,8 @@ Vue.component("feed", {
   },
 
   template: `
-<<<<<<< HEAD
-  <div>
-    <h1>TESTfeed</h1>
-=======
   <div class="col-sm-8 posts">
     <post v-for="post in posts" :key="post.id" v-bind:post="post"></post>
->>>>>>> ebc1c60263ac71441627e513037dc83324359e82
   </div>
   `
 });

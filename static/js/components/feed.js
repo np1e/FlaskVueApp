@@ -28,18 +28,6 @@ Vue.component("feed", {
           return this.posts;
         });
     }
-        /*
-      for (i = 0; i < this.following.length; i++) {
-        this.getPosts(this.following[i].id);
-      }
-    },
-    getPosts(id){
-      api.get(`/api/posts/users/${id}`, data => {
-        console.log(data.posts);
-        this.posts = data.posts;
-        return this.posts;
-      });
-    }*/
   },
 
   template: `

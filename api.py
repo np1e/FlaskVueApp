@@ -55,6 +55,7 @@ def get_post_by_id(id):
     else:
         return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
 
+<<<<<<< HEAD
 @api.route('/search', methods=['POST'])
 @jwt_required
 def search():
@@ -68,6 +69,19 @@ def search():
         return jsonify(resultposts=[result._asdict() for result in resultposts])
     else:
         return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
+=======
+@api.route('/search/<string:query>', methods=['GET'])
+def search(query):
+   print("search in api.py")
+   print(query)
+   resultposts = Post.query.filter(Post.content.contains(query)).all()
+   print(resultposts)
+   if resultposts:
+       print(resultposts)
+       return jsonify(resultposts=[result._asdict() for result in resultposts])
+   else:
+       return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
+>>>>>>> ff6c688a26f41b26be19c78a2031a9ef1bc63e44
 
 @api.route('/users', methods=['POST'])
 def create_user():
@@ -163,24 +177,37 @@ def get_follower(id):
 
 @api.route('/follower/<int:id>', methods=['PUT'])
 @jwt_required
-def follow(id):
+def setFollow(id):
     json = request.json
     followed = User.query.filter_by(id=id).first()
     follower = User.query.filter_by(id=json['id']).first()
     if followed and follower:
-        follower.follow(followed)
-        print("following")
-        return jsonify(user=follower._asdict())
+        if json['type'] == "add":
+            follower.follow(followed)
+            db.session.commit()
+            print("following")
+            return jsonify(user=follower._asdict())
+        elif json["type"] == "delete":
+            follower.unfollow(followed)
+            db.session.commit()
+            print("unfollowed")
+            return jsonify(user=follower._asdict())
     else:
         return jsonify({"msg": "User with %s not found." % id}), HTTPStatus.NOT_FOUND
 
 @api.route('/follower/<int:id>', methods=['DELETE'])
 @jwt_required
 def unfollow(id):
+    print("Delete!!!!")
     json = request.json
+    print(json)
     followed = User.query.filter_by(id=id).first()
     follower = User.query.filter_by(id=json['id']).first()
+    print(follower,"unfollowed",followed)
     if followed and follower:
         follower.unfollow(followed)
+        db.session.commit()
+        print("unfollowed")
+        return jsonify(user=follower._asdict())
     else:
         return jsonify({"msg": "User with %s not found." % id}), HTTPStatus.NOT_FOUND

@@ -58,7 +58,7 @@ class User(db.Model):
 
     def follow(self, user):
         if not self.is_following(user):
-            print("follow")
+            print(self,"follows now", user)
             self.followed.append(user)
 
     def unfollow(self, user):
@@ -70,7 +70,11 @@ class User(db.Model):
             followers.c.followed_id == user.id).count() > 0
 
     def get_follower(self):
+        return self.followers
+
+    def get_followed(self):
         return self.followed
+
 
 class Post(db.Model):
 

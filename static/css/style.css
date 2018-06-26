@@ -8,7 +8,7 @@ html {
     height: 100%;
 }
 
-button, input {
+input {
     border: 1px solid lightgray;
     border-radius: 5px;
     color:#666;
@@ -67,20 +67,6 @@ form > div {
     color: #00AA00;
     background-color: #BBFFAA;
 }
-th,td{
-    padding: 2px;
-}
-th:nth-child(1), th:nth-child(2) {
-    width: 40%;
-}
-
-th:nth-child(3){
-    width: 20%;
-}
-
-td:nth-child(3),td:nth-child(4) {
-    width: 10%;
-}
 
 a.login-register{
     margin-right: 0;
@@ -88,12 +74,6 @@ a.login-register{
     display: block;
     width: 84%;
     text-align: center;
-}
-.user-table{
-    width: 100%;
-}
-.user-table button{
-    width:100%;
 }
 
 .navbar {

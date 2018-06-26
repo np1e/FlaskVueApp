@@ -104,7 +104,6 @@ class ApiClient {
         var payloadObj = KJUR.jws.JWS.readSafeJSONString(b64toutf8(this.state.token.split(".")[1]));
         this.state.isAdmin = true ? payloadObj.user_claims.admin == 1 : false;
         this.state.isRestricted = true ? payloadObj.user_claims.restricted == 1 : false;
-        console.log("admin: " + this.state.isAdmin + " // " + "restricted: " + this.state.isRestricted);
         this.state.username = username;
         this.state.id = payloadObj.user_claims.id;
         this.state.isLoggedIn = true;

@@ -44,16 +44,19 @@ def create_post():
 @api.route('/posts/users/', methods=['POST'])
 def get_post_by_id():
     ids = request.json
-    post = Post.query.filter(Post.author_id.in_(ids)).order_by(Post.content.desc()).all()
-    #user_id = post.author_id
-    #user = User.query.filter(User.id == user_id).first()
-    #post_dict = post._asdict()
-    #post = post.join(User, Post.author_id = User.id)
-    #post_dict.update({'avatar': user.avatar})
-    #post_dict.update({'author': user.username})
-    if post:
-        print(post)
-        return jsonify(posts=[singlepost._asdict() for singlepost in post])
+    posts = []
+    postlist = Post.query.filter(Post.author_id.in_(ids)).order_by(Post.content.desc()).all()
+    for post in postlist:
+        user_id = post.author_id
+        user = User.query.filter(User.id == user_id).first()
+        post_dict = post._asdict()
+        post_dict.update({'avatar': user.avatar})
+        post_dict.update({'author': user.username})
+        posts.append(post_dict)
+
+    if posts:
+        print(postlist)
+        return jsonify(posts=posts)
     else:
         return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
 
@@ -62,12 +65,27 @@ def get_post_by_id():
 def search():
     post_json = request.json
     if post_json["order"] == "desc":
-        #resultposts = (Post.query.filter(Post.content.contains(post_json["query"])).order_by(Post.content.asc()).all()
-        resultposts = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.content.desc()).all()
+        posts = []
+        postlist = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.content.desc()).all()
+        for post in postlist:
+            user_id = post.author_id
+            user = User.query.filter(User.id == user_id).first()
+            post_dict = post._asdict()
+            post_dict.update({'avatar': user.avatar})
+            post_dict.update({'author': user.username})
+            posts.append(post_dict)
     else:
-        resultposts = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.content.asc()).all()
-    if resultposts:
-        return jsonify(resultposts=[result._asdict() for result in resultposts])
+        posts = []
+        postlist = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.content.asc()).all()
+        for post in postlist:
+            user_id = post.author_id
+            user = User.query.filter(User.id == user_id).first()
+            post_dict = post._asdict()
+            post_dict.update({'avatar': user.avatar})
+            post_dict.update({'author': user.username})
+            posts.append(post_dict)
+    if posts:
+        return jsonify(resultposts=posts)
     else:
         return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
 

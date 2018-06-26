@@ -6,6 +6,8 @@ Vue.component("user", {
       api: api.state,
       follower: null,
       posts: null,
+      success: "",
+      error: "",
       imageURL: "/static/img/default.gif"
     };
   },
@@ -41,11 +43,41 @@ Vue.component("user", {
       window.location.reload(true);
     },
     follow() {
-
+      json = {"id": this.api.id};
+      console.log("follow")
+      api.put(
+        `/api/follower/${this.id}`,
+        json,
+        () => {
+          this.success = "Now following user " + this.user.username;
+          this.refresh();
+        },
+        error => {
+          this.onError(error);
+          this.refresh();
+        }
+      );
     },
     unfollow() {
-
-    }
+      api.del(
+        `/api/follower/${this.id}`,
+        {"id": api.id},
+        () => {
+          this.success = "No longer following " + this.user.username;
+          this.refresh();
+        },
+        error => {
+          this.onError(error);
+          this.refresh();
+        }
+      );
+    },
+    refresh() {
+      this.fetchData();
+    },
+    onError(error) {
+      this.error = error.response.msg;
+    },
   },
   computed: {
     imageUrl: function() {
@@ -55,12 +87,12 @@ Vue.component("user", {
       return imageURL;
     },
     follows: function() {
-      let x;
-        for(x in this.follower) {
-          if(api.id == x.id) {
-            return true;
-          }
+      this.follower.forEach(function(f) {
+        if(api.id === f.id) {
+          console.log(f.id + " follows " + this.id);
+          return true;
         }
+      });
       return false;
     }
   },
@@ -73,8 +105,8 @@ Vue.component("user", {
       <span v-if="this.user.descrip">Description: {{ this.user.descrip }}</span><br>
       <router-link v-if="api.id === this.user.id" class="action" :to="{name: 'userEdit', params: {id: api.id}}">Edit your profile</router-link>
       <span>Follower: {{ this.follower.length }}</span>
-      <a v-if="api.id !== user.id && !{ follows }" class="action" v-on:click="follow()">Follow</a>
-      <a v-else-if="api.id !== user.id && { follows }" class="action" v-on:click="unfollow()">Unfollow</a>
+      <button v-if="api.id !== user.id && !follows" class="btn" v-on:click="follow()">Follow</button>
+      <button v-else-if="api.id !== user.id && follows" class="btn" v-on:click="unfollow()">Unfollow</button>
     </div>
     <div class="col-sm-8 posts">
       <post v-for="post in posts" :key="post.id" v-bind:post="post"></post>

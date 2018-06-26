@@ -55,6 +55,7 @@ def get_post_by_id(id):
     else:
         return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
 
+<<<<<<< HEAD
 @api.route('/search', methods=['POST'])
 @jwt_required
 def search():
@@ -68,6 +69,36 @@ def search():
         return jsonify(resultposts=[result._asdict() for result in resultposts])
     else:
         return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
+=======
+@api.route('/posts/users/<int:id>', methods=['GET'])
+def get_posts_by_user(id):
+    posts = Post.query.filter(author_id.id == id).all()
+    user = User.query.filter(User.id == id).first()
+    posts_lst = []
+    for post in posts:
+        post_dict = post._asdict()
+        post_dict.update({'avatar': user.avatar})
+        post_dict.update({'author': user.username})
+        posts_lst.append(post_dict)
+    if post:
+        print(posts_lst)
+        return jsonify(posts=posts_lst)
+    else:
+        return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
+
+
+@api.route('/search/<string:query>', methods=['GET'])
+def search(query):
+   print("search in api.py")
+   print(query)
+   resultposts = Post.query.filter(Post.content.contains(query)).all()
+   print(resultposts)
+   if resultposts:
+       print(resultposts)
+       return jsonify(resultposts=[result._asdict() for result in resultposts])
+   else:
+       return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
+>>>>>>> ebc1c60263ac71441627e513037dc83324359e82
 
 @api.route('/users', methods=['POST'])
 def create_user():
@@ -105,12 +136,9 @@ def get_user(id):
     posts_query = Post.query.filter(Post.author_id == id).all()
     posts = []
     for post in posts_query:
-        print(user.username)
         post_dict = dict(post._asdict(),**{'author': user.username})
-        print(post_dict)
         posts.append(post_dict)
     if user:
-        print(posts)
         return jsonify(user=user._asdict(), posts = posts)
     else:
         return jsonify({"msg": "User with %s not found." % id}), HTTPStatus.NOT_FOUND
@@ -120,12 +148,10 @@ def get_user(id):
 @jwt_required
 def update_user(id):
     updated_user = request.json
-    print(updated_user)
     if updated_user is None or id != updated_user.get('id'):
         return jsonify({"msg": "No or wrong user was provided."}), HTTPStatus.BAD_REQUEST
     user = User.query.with_for_update().filter_by(id=updated_user['id']).first()
 
-    print(updated_user["registered"])
     updated_user["registered"] = datetime.strptime(updated_user["registered"], '%a, %d %b %Y %H:%M:%S %Z')
 
     if user:
@@ -158,5 +184,28 @@ def delete_user(id):
 def get_follower(id):
     user = User.query.filter_by(id=id).first()
     follower = user.get_follower()
-    print([f._asdict() for f in follower])
     return jsonify(follower=[f._asdict() for f in follower])
+
+@api.route('/follower/<int:id>', methods=['PUT'])
+@jwt_required
+def follow(id):
+    json = request.json
+    followed = User.query.filter_by(id=id).first()
+    follower = User.query.filter_by(id=json['id']).first()
+    if followed and follower:
+        follower.follow(followed)
+        print("following")
+        return jsonify(user=follower._asdict())
+    else:
+        return jsonify({"msg": "User with %s not found." % id}), HTTPStatus.NOT_FOUND
+
+@api.route('/follower/<int:id>', methods=['DELETE'])
+@jwt_required
+def unfollow(id):
+    json = request.json
+    followed = User.query.filter_by(id=id).first()
+    follower = User.query.filter_by(id=json['id']).first()
+    if followed and follower:
+        follower.unfollow(followed)
+    else:
+        return jsonify({"msg": "User with %s not found." % id}), HTTPStatus.NOT_FOUND

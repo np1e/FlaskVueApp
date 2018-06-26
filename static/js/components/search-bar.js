@@ -2,13 +2,15 @@ Vue.component("search-bar", {
     data() {
         return {
             query: "",
+            order: "desc",
             error: null
         };
     },
     methods: {
         search() {
-            api.get(
-                `/api/search/${this.query}`, data => {
+            json = {"query":this.query, "order":this.order};
+            api.post(
+                `/api/search`, json , data => {
                     console.log("searched");
                     this.$router.push({ name: 'search-results', params: { results: data.resultposts }});
                 },

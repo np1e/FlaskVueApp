@@ -55,17 +55,19 @@ def get_post_by_id(id):
     else:
         return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
 
-@api.route('/search/<string:query>', methods=['GET'])
-def search(query):
-   print("search in api.py")
-   print(query)
-   resultposts = Post.query.filter(Post.content.contains(query)).all()
-   print(resultposts)
-   if resultposts:
-       print(resultposts)
-       return jsonify(resultposts=[result._asdict() for result in resultposts])
-   else:
-       return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
+@api.route('/search', methods=['POST'])
+@jwt_required
+def search():
+    post_json = request.json
+    if post_json["order"] == "desc":
+        resultposts = Post.query.filter(Post.content.contains(post_json["query"])).order_by(Post.content.desc()).all()
+    else:
+        resultposts = Post.query.filter(Post.content.contains(post_json["query"])).order_by(Post.content.asc()).all()
+    if resultposts:
+        print(resultposts)
+        return jsonify(resultposts=[result._asdict() for result in resultposts])
+    else:
+        return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
 
 @api.route('/users', methods=['POST'])
 def create_user():

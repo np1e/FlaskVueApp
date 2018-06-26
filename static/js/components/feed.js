@@ -1,7 +1,7 @@
 Vue.component("feed", {
   template: `
   <div>
-    <h1>TEST</h1>
+    <h1>TESTfeed</h1>
   </div>
   `
 })

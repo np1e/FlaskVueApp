@@ -11,13 +11,13 @@ Vue.component("feed", {
   },
   methods: {
     get_follower(){
-      api.get(`/api/followers/${this.id}`, data => {
-        this.follower = data.follower;
+      api.get(`/api/following/${this.id}`, data => {
+        this.following = data.following;
       });
     },
     getFeed(){
       this.get_follower();
-      for (x in this.follower) {
+      for (x in this.following) {
         this.posts += getPosts(x.id);
       }
     },

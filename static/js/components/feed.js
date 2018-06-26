@@ -3,29 +3,43 @@ Vue.component("feed", {
     return {
       posts : null,
       id : api.state.id,
-      follower : null
+      following : ""
     };
   },
   mounted() {
-    this.getFeed()
+    this.get_follower()
   },
   methods: {
     get_follower(){
       api.get(`/api/following/${this.id}`, data => {
         this.following = data.following;
+        this.getFeed();
       });
     },
     getFeed(){
-      this.get_follower();
-      for (x in this.following) {
-        this.posts += getPosts(x.id);
+        ids = [];
+        for (i = 0; i < this.following.length; i++) {
+          ids[i] = (this.following[i].id);
+        }
+        console.log(ids);
+        api.post(`/api/posts/users/`, ids, data => {
+          console.log(data.posts);
+          this.posts = data.posts;
+          return this.posts;
+        });
+    }
+        /*
+      for (i = 0; i < this.following.length; i++) {
+        this.getPosts(this.following[i].id);
       }
     },
     getPosts(id){
       api.get(`/api/posts/users/${id}`, data => {
-        return data.posts;
+        console.log(data.posts);
+        this.posts = data.posts;
+        return this.posts;
       });
-    }
+    }*/
   },
 
   template: `

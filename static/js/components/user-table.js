@@ -7,7 +7,8 @@ Vue.component("user-table", {
   data() {
     return {
       users: null,
-      error: ""
+      error: "",
+      api: api.state
     };
   },
   mounted() {
@@ -63,6 +64,11 @@ Vue.component("user-table", {
       );
     }
   },
+  computed: {
+    self: function() {
+      return this.api.id;
+    }
+  },
   template: `
     <table class="table">
         <tr>
@@ -82,7 +88,7 @@ Vue.component("user-table", {
             <td><router-link class="btn" :to="{name: 'userEdit', params: {id: user.id}}" tag="button">edit</router-link></td>
             <td><button class="btn" type="butto" @click="promoteUser(user.id)" v-bind:disabled="user.restricted == 1">{{ user.admin == 1 ? 'Strip' : 'Promote'}}</button></td>
             <td><button class="btn" type="button" @click="restrictUser(user.id)" v-bind:disabled="user.admin == 1">{{ user.restricted == 1 ? 'Unrestrict' : 'Restrict'}}</button></td>
-            <td><button class="btn btn-danger" type="button" @click="deleteUser(user.id)">delete</button></td>
+            <td><button class="btn btn-danger" type="button" @click="deleteUser(user.id)" v-bind:disabled="self == user.id">delete</button></td>
         </tr>
     </table>
     `

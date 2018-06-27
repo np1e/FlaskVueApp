@@ -13,7 +13,14 @@ api = Blueprint('api', __name__)
 @jwt_required
 def get_users():
     users = User.query.all()
-    return jsonify(users=[u._asdict() for u in users])
+    users_list = []
+    for user in users:
+        followers = len(get_follower(user.id).json['follower'])
+        userdict = user._asdict()
+        userdict.update({'followers': followers })
+        print(userdict)
+        users_list.append(userdict)
+    return jsonify(users=users_list)
 
 
 ##TODO create/update/delete post
@@ -45,7 +52,7 @@ def create_post():
 def get_post_by_id():
     ids = request.json
     posts = []
-    postlist = Post.query.filter(Post.author_id.in_(ids)).order_by(Post.content.desc()).all()
+    postlist = Post.query.filter(Post.author_id.in_(ids)).order_by(Post.created.desc()).all()
     for post in postlist:
         user_id = post.author_id
         user = User.query.filter(User.id == user_id).first()
@@ -66,7 +73,7 @@ def search_posts():
     post_json = request.json
     if post_json["order"] == "desc":
         posts = []
-        postlist = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.content.desc()).all()
+        postlist = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.created.desc()).all()
         for post in postlist:
             user_id = post.author_id
             user = User.query.filter(User.id == user_id).first()
@@ -76,7 +83,7 @@ def search_posts():
             posts.append(post_dict)
     else:
         posts = []
-        postlist = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.content.asc()).all()
+        postlist = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.created.asc()).all()
         for post in postlist:
             user_id = post.author_id
             user = User.query.filter(User.id == user_id).first()

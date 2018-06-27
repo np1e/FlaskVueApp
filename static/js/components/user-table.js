@@ -80,9 +80,9 @@ Vue.component("user-table", {
             <th colspan="2">Tools</th>
         </tr>
         <tr v-for='user in users'>
-            <td>{{user.id}}</td>
+            <td><router-link :to="{name: 'user', params: {id: user.id}}">{{ user.username }}</router-link></td>
             <td >{{user.username}}</td>
-            <td>user.followers.length</td>
+            <td>{{ user.followers }}</td>
             <td>{{user.registered}}</td>
             <td>{{user.email}}</td>
             <td><router-link class="btn" :to="{name: 'userEdit', params: {id: user.id}}" tag="button">edit</router-link></td>

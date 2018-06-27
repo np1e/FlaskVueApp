@@ -213,6 +213,9 @@ def update_user(id):
 def delete_user(id):
     user = User.query.filter_by(id=id).first()
     if user:
+        posts = Post.query.filter(Post.author_id == id)
+        for post in posts:
+            delete_post(post.id)
         db.session.delete(user)
         db.session.commit()
         return jsonify({"msg": "User with id %s deleted." % id})

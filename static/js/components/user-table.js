@@ -73,7 +73,7 @@ Vue.component("user-table", {
           this.sortOrder = "desc";
           sortOrder = -1;
           property = property.substr(1);
-          this.sortBy = property.substr(1);
+          this.sortBy = property;
       }
       return function (a,b) {
           var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
@@ -82,8 +82,9 @@ Vue.component("user-table", {
     },
     sort(property) {
       if(this.sortBy == property) {
-        let prepend = "-" ? this.sortOrder == 'asc' : "";
-        prepend += property;
+        let prepend = this.sortOrder == 'asc' ? "-" : "";
+        property = prepend + property;
+        console.log(property);
       }
       this.users.sort(this.dynamicSort(property));
     }
@@ -95,45 +96,45 @@ Vue.component("user-table", {
   },
   template: `
     <table class="table">
-        <tr>
-            <th>
-              <button class="noBtn" @click="sort('id')">ID</button>
-              <span v-if="this.sortBy == 'id' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
-              <span v-if="this.sortBy == 'id' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
-            </th>
-            <th>
-              <button class="noBtn" @click="sort('username')">Username</button>
-              <span v-if="this.sortBy == 'username' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
-              <span v-if="this.sortBy == 'username' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
-            </th>
-            <th>
-              <button class="noBtn" @click="sort('followers')"># follower</button>
-              <span v-if="this.sortBy == 'follower' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
-              <span v-if="this.sortBy == 'id' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
-            </th>
-            <th>
-              <button class="noBtn" @click="sort('registered')">Registered</button>
-              <span v-if="this.sortBy == 'registered' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
-              <span v-if="this.sortBy == 'registered' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
-            </th>
-            <th>
-              <button class="noBtn" @click="sort('email')">E-Mail</button>
-              <span v-if="this.sortBy == 'email' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
-              <span v-if="this.sortBy == 'email' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
-            </th>
-            <th colspan="2">Tools</th>
-        </tr>
-        <tr v-for='user in users'>
-            <td>{{user.id}}</td>
-            <td><router-link :to="{name: 'user', params: {id: user.id}}">{{ user.username }}</router-link></td>
-            <td>{{ user.followers }}</td>
-            <td>{{user.registered}}</td>
-            <td>{{user.email}}</td>
-            <td><router-link class="btn" :to="{name: 'userEdit', params: {id: user.id}}" tag="button">edit</router-link></td>
-            <td><button class="btn" type="butto" @click="promoteUser(user.id)" v-bind:disabled="user.restricted == 1">{{ user.admin == 1 ? 'Strip' : 'Promote'}}</button></td>
-            <td><button class="btn" type="button" @click="restrictUser(user.id)" v-bind:disabled="user.admin == 1">{{ user.restricted == 1 ? 'Unrestrict' : 'Restrict'}}</button></td>
-            <td><button class="btn btn-danger" type="button" @click="deleteUser(user.id)" v-bind:disabled="self == user.id">delete</button></td>
-        </tr>
+      <tr>
+        <th>
+          <button class="noBtn" @click="sort('id')">ID</button>
+          <span v-if="this.sortBy == 'id' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
+          <span v-if="this.sortBy == 'id' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
+        </th>
+        <th>
+          <button class="noBtn" @click="sort('username')">Username</button>
+          <span v-if="this.sortBy == 'username' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
+          <span v-if="this.sortBy == 'username' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
+        </th>
+        <th>
+          <button class="noBtn" @click="sort('followers')"># follower</button>
+          <span v-if="this.sortBy == 'followers' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
+          <span v-if="this.sortBy == 'followers' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
+        </th>
+        <th>
+          <button class="noBtn" @click="sort('registered')">Registered</button>
+          <span v-if="this.sortBy == 'registered' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
+          <span v-if="this.sortBy == 'registered' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
+        </th>
+        <th>
+          <button class="noBtn" @click="sort('email')">E-Mail</button>
+          <span v-if="this.sortBy == 'email' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
+          <span v-if="this.sortBy == 'email' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
+        </th>
+        <th colspan="2">Tools</th>
+      </tr>
+      <tr v-for='user in users'>
+        <td>{{user.id}}</td>
+        <td><router-link :to="{name: 'user', params: {id: user.id}}">{{ user.username }}</router-link></td>
+        <td>{{ user.followers }}</td>
+        <td>{{user.registered}}</td>
+        <td>{{user.email}}</td>
+        <td><router-link class="btn" :to="{name: 'userEdit', params: {id: user.id}}" tag="button">edit</router-link></td>
+        <td><button class="btn" type="butto" @click="promoteUser(user.id)" v-bind:disabled="user.restricted == 1">{{ user.admin == 1 ? 'Strip' : 'Promote'}}</button></td>
+        <td><button class="btn" type="button" @click="restrictUser(user.id)" v-bind:disabled="user.admin == 1">{{ user.restricted == 1 ? 'Unrestrict' : 'Restrict'}}</button></td>
+        <td><button class="btn btn-danger" type="button" @click="deleteUser(user.id)" v-bind:disabled="self == user.id">delete</button></td>
+      </tr>
     </table>
     `
 });

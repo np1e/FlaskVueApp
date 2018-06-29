@@ -24,6 +24,7 @@ Vue.component('navigation', {
                 <li v-if='api.isLoggedIn'><router-link to="/">Home</router-link></li>
                 <li v-if='api.isLoggedIn'><router-link :to="{name: 'user', params: {id: api.id}}">My Profile</router-link></li>
                 <li v-if='api.isLoggedIn'><router-link to="/post/create">Create post</router-link></li>
+                <li v-if='api.isLoggedIn'><router-link to="/search-results">Search</router-link></li>
                 <li v-if='!api.isLoggedIn'><router-link to="/">Home</router-link></li>
                 <li v-if='!api.isLoggedIn'><router-link to="/login">Log In</router-link></li>
                 <li v-if='!api.isLoggedIn'><router-link to="/register">Register</router-link></li>
@@ -35,7 +36,6 @@ Vue.component('navigation', {
                   </ul>
                 </li>
               </ul>
-              <search-bar></search-bar>
               <ul class="nav navbar-nav navbar-right">
                 <li><span class="navbar-text">{{ api.username }}</span></li>
                 <li v-if='api.isLoggedIn'><a href="#" v-on:click='logout()'>Log Out</a></li>

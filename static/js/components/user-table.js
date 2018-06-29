@@ -62,6 +62,20 @@ Vue.component("user-table", {
         },
         this.onError.bind(this)
       );
+    },
+    dynamicSort(property) {
+      var sortOrder = 1;
+      if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+      }
+      return function (a,b) {
+          var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+          return result * sortOrder;
+      };
+    },
+    sort(property) {
+      this.users.sort(this.dynamicSort(property));
     }
   },
   computed: {
@@ -72,16 +86,16 @@ Vue.component("user-table", {
   template: `
     <table class="table">
         <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th># follower</th>
-            <th>Registered</th>
-            <th>E-Mail</th>
+            <th><button class="noBtn" @click="sort('id')">ID</button></th>
+            <th><button class="noBtn" @click="sort('username')">Username</button></th>
+            <th><button class="noBtn" @click="sort('followers')"># follower</button></th>
+            <th><button class="noBtn" @click="sort('registered')">Registered</button></th>
+            <th><button class="noBtn" @click="sort('email')">E-Mail</button></th>
             <th colspan="2">Tools</th>
         </tr>
         <tr v-for='user in users'>
+            <td>{{user.id}}</td>
             <td><router-link :to="{name: 'user', params: {id: user.id}}">{{ user.username }}</router-link></td>
-            <td >{{user.username}}</td>
             <td>{{ user.followers }}</td>
             <td>{{user.registered}}</td>
             <td>{{user.email}}</td>

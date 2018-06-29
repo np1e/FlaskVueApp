@@ -13,7 +13,14 @@ api = Blueprint('api', __name__)
 @jwt_required
 def get_users():
     users = User.query.all()
-    return jsonify(users=[u._asdict() for u in users])
+    users_list = []
+    for user in users:
+        followers = len(get_follower(user.id).json['follower'])
+        userdict = user._asdict()
+        userdict.update({'followers': followers })
+        print(userdict)
+        users_list.append(userdict)
+    return jsonify(users=users_list)
 
 
 ##TODO create/update/delete post
@@ -60,9 +67,9 @@ def get_post_by_id():
     else:
         return jsonify({"msg": "Post with %s not found." % id}), HTTPStatus.NOT_FOUND
 
-@api.route('/search', methods=['POST'])
+@api.route('/posts/search', methods=['POST'])
 @jwt_required
-def search():
+def search_posts():
     post_json = request.json
     if post_json["order"] == "desc":
         posts = []
@@ -85,9 +92,37 @@ def search():
             post_dict.update({'author': user.username})
             posts.append(post_dict)
     if posts:
+        print(posts)
         return jsonify(resultposts=posts)
     else:
         return jsonify({"msg": "No matching posts found"}), HTTPStatus.NOT_FOUND
+
+
+@api.route('/users/search', methods=['POST'])
+@jwt_required
+def search_users():
+    print("user werden geuscht")
+    user_json = request.json
+    if user_json["order"] == "desc":
+        users = []
+        userlist = ((User.query.filter(User.username.contains(user_json["query"])))).order_by(User.username.desc()).all()
+        for user in userlist:
+            user_id = user.id
+            user = User.query.filter(User.id == user_id).first()
+            users.append(user._asdict())
+
+    else:
+        users = []
+        userlist = ((User.query.filter(User.username.contains(user_json["query"])))).order_by(User.username.asc()).all()
+        for user in userlist:
+            user_id = user.id
+            user = User.query.filter(User.id == user_id).first()
+            users.append(user._asdict())
+    if users:
+        print(users)
+        return jsonify(resultusers=users)
+    else:
+        return jsonify({"msg": "No matching user found"}), HTTPStatus.NOT_FOUND
 
 #@api.route('/search', methods=['POST'])
 #@jwt_required
@@ -185,6 +220,9 @@ def update_user(id):
 def delete_user(id):
     user = User.query.filter_by(id=id).first()
     if user:
+        posts = Post.query.filter(Post.author_id == id)
+        for post in posts:
+            delete_post(post.id)
         db.session.delete(user)
         db.session.commit()
         return jsonify({"msg": "User with id %s deleted." % id})

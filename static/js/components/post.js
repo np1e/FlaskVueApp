@@ -38,7 +38,7 @@ Vue.component("post", {
   template: `
   <div class="post panel panel-default">
     <div class="panel-heading">
-      <!--<img v-if="this.user.avatar === 1" :src="{ imgUrl }">
+      <!--<img v-if="user.avatar === 1" :src="{ imgUrl }">
       <img v-else src="/static/img/default.gif">-->
       <router-link :to="{name: 'user', params: {id: post.author_id}}"><h1>{{ post.author }}</h1></router-link>
       <p class="clearfix">{{ post.created.toString() }}</p>

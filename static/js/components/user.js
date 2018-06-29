@@ -1,7 +1,7 @@
 Vue.component("user", {
   data() {
     return {
-      user: null,
+      Username: null,
       id: null,
       api: api.state,
       follower: null,
@@ -85,6 +85,7 @@ Vue.component("user", {
       this.error = error.response.msg;
     },
   },
+  props: ['user'],
   computed: {
     imageUrl: function() {
       if(this.user.avatar == 1) {
@@ -110,12 +111,12 @@ Vue.component("user", {
   template: `
   <div>
     <div class="col-sm-4 user-profile">
-      <img v-if="this.user.avatar === 1" :src="{ imgUrl }">
+      <img v-if="user.avatar === 1" :src="{ imgUrl }">
       <img v-else src="/static/img/default.gif">
-      Username: {{ this.user.username }}<br>
-      <span v-if="this.user.descrip">Description: {{ this.user.descrip }}</span><br>
-      <router-link v-if="api.id === this.user.id" class="action" :to="{name: 'userEdit', params: {id: api.id}}">Edit your profile</router-link>
-      <span>Follower: {{ this.follower.length }}</span>
+      Username: {{ user.username }}<br>
+      <span v-if="user.descrip">Description: {{ user.descrip }}</span><br>
+      <router-link v-if="api.id === user.id" class="action" :to="{name: 'userEdit', params: {id: api.id}}">Edit your profile</router-link>
+      <span>Follower: {{ follower.length }}</span>
       <button v-if="api.id !== user.id" class="btn" v-on:click="setFollow()">{{ follows ? 'Unfollow' : 'Follow'}}</button>
       <button v-else-if="api.id !== user.id && follows" class="btn" v-on:click="unfollow()">Unfollow</button>
     </div>

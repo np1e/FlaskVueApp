@@ -45,7 +45,7 @@ def create_post():
 def get_post_by_id():
     ids = request.json
     posts = []
-    postlist = Post.query.filter(Post.author_id.in_(ids)).order_by(Post.content.desc()).all()
+    postlist = Post.query.filter(Post.author_id.in_(ids)).order_by(Post.created.desc()).all()
     for post in postlist:
         user_id = post.author_id
         user = User.query.filter(User.id == user_id).first()
@@ -66,7 +66,7 @@ def search():
     post_json = request.json
     if post_json["order"] == "desc":
         posts = []
-        postlist = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.content.desc()).all()
+        postlist = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.created.desc()).all()
         for post in postlist:
             user_id = post.author_id
             user = User.query.filter(User.id == user_id).first()
@@ -76,7 +76,7 @@ def search():
             posts.append(post_dict)
     else:
         posts = []
-        postlist = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.content.asc()).all()
+        postlist = ((Post.query.filter(Post.content.contains(post_json["query"])))).order_by(Post.created.asc()).all()
         for post in postlist:
             user_id = post.author_id
             user = User.query.filter(User.id == user_id).first()
@@ -144,7 +144,7 @@ def create_user():
 @api.route('/users/<int:id>', methods=['GET'])
 def get_user(id):
     user = User.query.filter_by(id=id).first()
-    posts_query = Post.query.filter(Post.author_id == id).all()
+    posts_query = Post.query.filter(Post.author_id == id).order_by(Post.created.desc()).all()
     posts = []
     for post in posts_query:
         post_dict = dict(post._asdict(),**{'author': user.username})

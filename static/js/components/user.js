@@ -18,6 +18,9 @@ Vue.component("user", {
     this.id = this.$route.params.id;
   },
   methods: {
+    sync() {
+        this.fetchData();
+    },
     fetchData() {
       api.get(`/api/users/${this.id}`, data => {
         this.user = data.user;
@@ -117,7 +120,7 @@ Vue.component("user", {
       <button v-else-if="api.id !== user.id && follows" class="btn" v-on:click="unfollow()">Unfollow</button>
     </div>
     <div class="col-sm-8 posts">
-      <post v-for="post in posts" :key="post.id" v-bind:post="post"></post>
+      <post v-for="post in posts" @update="sync" :key="post.id" v-bind:post="post"></post>
     </div>
   </div>
     `

@@ -18,8 +18,11 @@ Vue.component("user", {
     this.id = this.$route.params.id;
   },
   methods: {
-    sync() {
-        this.fetchData();
+    sync(id) {
+      let newPosts = this.posts.filter(function(el) {
+        return el.id !== id;
+      });
+      this.posts = newPosts;
     },
     fetchData() {
       api.get(`/api/users/${this.id}`, data => {

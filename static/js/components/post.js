@@ -13,8 +13,8 @@ Vue.component("post", {
     },
     deletePost(id){
       api.del(`/api/posts/${id}`, data => {
-        this.$parent.$options.methods.refresh();
-        this.$emit('update')
+        //this.$parent.$options.methods.refresh();
+        this.$emit('update', id)
       });
     }
   },

@@ -8,7 +8,9 @@ Vue.component("user-table", {
     return {
       users: null,
       error: "",
-      api: api.state
+      api: api.state,
+      sortOrder: "",
+      sortBy: ""
     };
   },
   mounted() {
@@ -65,9 +67,13 @@ Vue.component("user-table", {
     },
     dynamicSort(property) {
       var sortOrder = 1;
+      this.sortOrder = "asc";
+      this.sortBy = property;
       if(property[0] === "-") {
+          this.sortOrder = "desc";
           sortOrder = -1;
           property = property.substr(1);
+          this.sortBy = property.substr(1);
       }
       return function (a,b) {
           var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
@@ -75,6 +81,10 @@ Vue.component("user-table", {
       };
     },
     sort(property) {
+      if(this.sortBy == property) {
+        let prepend = "-" ? this.sortOrder == 'asc' : "";
+        prepend += property;
+      }
       this.users.sort(this.dynamicSort(property));
     }
   },
@@ -86,11 +96,31 @@ Vue.component("user-table", {
   template: `
     <table class="table">
         <tr>
-            <th><button class="noBtn" @click="sort('id')">ID</button></th>
-            <th><button class="noBtn" @click="sort('username')">Username</button></th>
-            <th><button class="noBtn" @click="sort('followers')"># follower</button></th>
-            <th><button class="noBtn" @click="sort('registered')">Registered</button></th>
-            <th><button class="noBtn" @click="sort('email')">E-Mail</button></th>
+            <th>
+              <button class="noBtn" @click="sort('id')">ID</button>
+              <span v-if="this.sortBy == 'id' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
+              <span v-if="this.sortBy == 'id' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
+            </th>
+            <th>
+              <button class="noBtn" @click="sort('username')">Username</button>
+              <span v-if="this.sortBy == 'username' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
+              <span v-if="this.sortBy == 'username' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
+            </th>
+            <th>
+              <button class="noBtn" @click="sort('followers')"># follower</button>
+              <span v-if="this.sortBy == 'follower' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
+              <span v-if="this.sortBy == 'id' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
+            </th>
+            <th>
+              <button class="noBtn" @click="sort('registered')">Registered</button>
+              <span v-if="this.sortBy == 'registered' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
+              <span v-if="this.sortBy == 'registered' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
+            </th>
+            <th>
+              <button class="noBtn" @click="sort('email')">E-Mail</button>
+              <span v-if="this.sortBy == 'email' && this.sortOrder == 'asc'" class="glyphicon glyphicon-chevron-up"></span>
+              <span v-if="this.sortBy == 'email' && this.sortOrder == 'desc'" class="glyphicon glyphicon-chevron-down"></span>
+            </th>
             <th colspan="2">Tools</th>
         </tr>
         <tr v-for='user in users'>

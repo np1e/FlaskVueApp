@@ -10,7 +10,6 @@ Vue.component("search-results", {
         };
     },
     methods: {
-
           search() {
               json = {"query":this.query, "order":this.order};
               api.post(

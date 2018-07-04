@@ -80,7 +80,7 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    content = db.Column(db.String(300), nullable = False)
+    content = db.Column(db.String(400), nullable = False)
     created = db.Column(db.DateTime, default=datetime.utcnow, nullable = False)
     reviewed = db.Column(db.Integer, default=0, nullable=False)
 

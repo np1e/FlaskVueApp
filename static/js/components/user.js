@@ -103,10 +103,10 @@ Vue.component("user", {
         if(api.state.id == f.id) {
           console.log(f.id + " follows " + this.id);
           follows= true;
-          return;
+          return follows;
         }
         follows= false;
-        return;
+        return follows;
       });
       return follows;
     }

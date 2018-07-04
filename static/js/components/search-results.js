@@ -10,80 +10,40 @@ Vue.component("search-results", {
         };
     },
     methods: {
-          sync(id) {
-            let newPosts = this.resultposts.filter(function(el) {
-              return el.id !== id;
+      sync(id) {
+        let newPosts = this.resultposts.filter(function(el) {
+          return el.id !== id;
+        });
+      },
+      search() {
+        json = {"query":this.query, "order":this.order};
+        api.post(
+            `/api/posts/search`, json , data => {
+                console.log("searched");
+                this.resultposts = data.resultposts;
+                this.error = null;
+                //this.$router.push({ name: 'search-results', params: { results: data.resultposts }});
+            },
+            error => {
+                this.error = error.response.msg;
+                this.resultposts = null;
+                //this.$router.push({ name: 'search-results', params: { error: "No matching posts found" }});
             }
-          },
-          search() {
-              json = {"query":this.query, "order":this.order};
-              api.post(
-                  `/api/posts/search`, json , data => {
-                      console.log("searched");
-                      this.resultposts = data.resultposts;
-                      this.error = null;
-                      //this.$router.push({ name: 'search-results', params: { results: data.resultposts }});
-                  },
-                  error => {
-                      this.error = error.response.msg;
-                      this.resultposts = null;
-                      //this.$router.push({ name: 'search-results', params: { error: "No matching posts found" }});
-                  }
-              );
-              api.post(
-                  `/api/users/search`, json , data => {
-                      console.log("user gesucht");
-                      this.resultusers = data.resultusers;
-                      this.user_error = null;
-                      //this.$router.push({ name: 'search-results', params: { user_results: data.resultusers }});
-                  },
-                  user_error => {
-                      this.user_error = user_error.response.msg;
-                      this.resultusers = null;
-                      //this.$router.push({ name: 'search-results', params: { user_error: "No matching users found" }});
-                  }
-              );
-          }
-
-    },
-    beforeRouteEnter(to, from, next) {
-      next(vm => {
-        vm.resultusers = vm.$route.params.user_results;
-        vm.resultposts = vm.$route.params.results;
-        vm.error= vm.$route.params.error;
-        vm.user_error= vm.$route.params.user_error;
-      });
-      this.resultposts = newPosts;
-    },
-    search() {
-      json = {"query":this.query, "order":this.order};
-      api.post(
-        `/api/posts/search`, json , data => {
-            console.log("searched");
-            this.resultposts = data.resultposts;
-            this.error = null;
-            //this.$router.push({ name: 'search-results', params: { results: data.resultposts }});
-        },
-        error => {
-            this.error = error.response.msg;
-            this.resultposts = null;
-            //this.$router.push({ name: 'search-results', params: { error: "No matching posts found" }});
-        }
-      );
-      api.post(
-        `/api/users/search`, json , data => {
-            console.log("user gesucht");
-            this.resultusers = data.resultusers;
-            this.user_error = null;
-            //this.$router.push({ name: 'search-results', params: { user_results: data.resultusers }});
-        },
-        user_error => {
-            this.user_error = user_error.response.msg;
-            this.resultusers = null;
-            //this.$router.push({ name: 'search-results', params: { user_error: "No matching users found" }});
-        }
-      );
-    }
+        );
+        api.post(
+            `/api/users/search`, json , data => {
+                console.log("user gesucht");
+                this.resultusers = data.resultusers;
+                this.user_error = null;
+                //this.$router.push({ name: 'search-results', params: { user_results: data.resultusers }});
+            },
+            user_error => {
+                this.user_error = user_error.response.msg;
+                this.resultusers = null;
+                //this.$router.push({ name: 'search-results', params: { user_error: "No matching users found" }});
+            }
+        );
+      }
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {

@@ -1,35 +1,10 @@
-# Flask Vue Basic
-
-Einfaches Boilerplate Projekt für Webapps mit Vue und Flask. Moderne
-Buildtools des JavaScript Ökosystems werden vollständig ignoriert. 
-Ein Deployment der Applikation ist sehr einfach, es muss nichts
-kompiliert werden, die Kontrolle über den Aufbau muss nicht abgeggeben 
-werden, die Flask-Applikation liefert API und Frontend gleichzeitig aus.
-
-Diese Vorteile werden durch die folgenden Nachteile aufgewogen:
-
-  - kein Support für Babel: Transpilation und Shimming moderner
-    JavaScript-Sprachfeatures auf älteren Browsern ist nicht möglich
-  - kein Support für Vue Single-File Components. Diese werden normalerweise
-    durch den Webpack Vue-Loader verarbeitet.
-  - keine Minification
-  - keine Script-Injection in HTML-Files, JavaScript muss manuell in
-    HTML-Dokumente integriert werden
-  - kein Live Reload des Frontends während der Entwicklung
-  - kein Dependency Management durch NPM
+# Flask Vue App
 
 ## Verwendung
 Zunächst sollte ein Python3 Virtualenv erzeugt werden
 
     python3 -m venv venv
     source venv/bin/activate
-    pip install -U pip
-
-Falls das nicht klappt aber der virtualenvwrapper installiert ist kann über
-
-    virtualenv -p python3 venv
-
-ein neues Virtualenv erzeugt werden.
 
 Danach können bei aktiviertem venv alle notwendigen Dependencies mittels
 
